@@ -1,19 +1,23 @@
 from decimal import Decimal
 
+import pint
 import pytest
 from pydantic import ValidationError
 
 from app.modules.catalog.models import DataType
 from app.modules.catalog.schemas import ValidationRules, check_metric_shape
-from app.modules.catalog.units import validate_unit
+from app.modules.catalog.units import unit_registry, validate_unit
 
 
-@pytest.mark.parametrize("unit", ["t", "MWh", "GJ", "m**3", "kg/m**3", "count", "percent"])
+@pytest.mark.parametrize(
+    "unit",
+    ["t", "MWh", "GJ", "m**3", "kg/m**3", "count", "percent", "t CO2e", "kg CO2e", "t CO2e / MWh"],
+)
 def test_known_units(unit: str) -> None:
     assert validate_unit(f" {unit} ") == unit
 
 
-@pytest.mark.parametrize("unit", ["", "   ", "furlongs_per_fortnight", "2 kg", "t CO2e"])
+@pytest.mark.parametrize("unit", ["", "   ", "furlongs_per_fortnight", "2 kg", "tCO2e"])
 def test_unknown_or_malformed_units(unit: str) -> None:
     with pytest.raises(ValueError, match="unit"):
         validate_unit(unit)
@@ -59,3 +63,16 @@ def test_numeric_metrics_need_a_unit_and_others_must_not_have_one() -> None:
         check_metric_shape(DataType.DECIMAL, None, ValidationRules())
     with pytest.raises(ValueError, match="have no unit"):
         check_metric_shape(DataType.TEXT, "kg", ValidationRules())
+
+
+def test_co2e_converts_between_mass_units() -> None:
+    quantity = unit_registry().Quantity(Decimal("1500"), "kg CO2e")
+
+    assert quantity.to("t CO2e").magnitude == Decimal("1.5")
+
+
+def test_co2e_cannot_be_added_to_plain_mass() -> None:
+    registry = unit_registry()
+
+    with pytest.raises(pint.DimensionalityError):
+        registry.Quantity(Decimal(1), "t CO2e") + registry.Quantity(Decimal(1), "t")

@@ -1,0 +1,7 @@
+# Extra unit definitions for the GRI catalog, loaded on top of pint's defaults.
+# Syntax: https://pint.readthedocs.io/en/stable/advanced/defining.html
+
+# Carbon dioxide equivalent. Its own dimension, so emissions combine with mass units
+# ("t CO2e", "kg CO2e", "t CO2e / MWh") but can never be added to plain mass ("t").
+# Write it with a space after the mass unit: "t CO2e", not "tCO2e".
+CO2e = [carbon_dioxide_equivalent] = CO2eq
