@@ -1,11 +1,16 @@
 import os
 import socket
 from collections.abc import AsyncIterator, Iterator
+from pathlib import Path
 
 import pytest
+from alembic import command
+from alembic.config import Config
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from pydantic import SecretStr
+from sqlalchemy import create_engine as create_sync_engine
+from sqlalchemy import make_url, text
 from sqlalchemy.ext.asyncio import AsyncEngine
 from testcontainers.community.minio import MinioContainer
 from testcontainers.community.postgres import PostgresContainer
@@ -19,6 +24,11 @@ MINIO_IMAGE = (
     "pgsty/minio:RELEASE.2026-08-04T00-00-00Z"  # keep in sync with infra/docker-compose.yml
 )
 TEST_BUCKET = "gri-kpi-test"
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+
+# Test-only login role in gri_app: like the real app, it is subject to row-level security.
+APP_TEST_ROLE = "gri_api_test"
+APP_TEST_PASSWORD = "gri_api_test"  # noqa: S105  (throwaway test database)
 
 
 def unused_port() -> int:
@@ -64,7 +74,48 @@ def minio() -> Iterator[MinioContainer]:
 
 @pytest.fixture(scope="session")
 async def db_engine(postgres_url: str) -> AsyncIterator[AsyncEngine]:
+    """Connects as the schema owner (bypasses row-level security). Use app_engine for app tests."""
     engine = create_engine(postgres_url)
+    yield engine
+    await engine.dispose()
+
+
+def alembic_config(database_url: str) -> Config:
+    config = Config(BACKEND_DIR / "alembic.ini")
+    config.set_main_option("sqlalchemy.url", database_url)
+    return config
+
+
+@pytest.fixture(scope="session")
+def migrated_postgres_url(postgres_url: str) -> str:
+    """The owner URL of a database migrated to head. Sync, because Alembic runs its own loop."""
+    command.upgrade(alembic_config(postgres_url), "head")
+    return postgres_url
+
+
+@pytest.fixture(scope="session")
+def app_database_url(migrated_postgres_url: str) -> str:
+    """URL for a non-superuser login in gri_app, as the running application would use."""
+    engine = create_sync_engine(migrated_postgres_url)
+    with engine.begin() as conn:
+        exists = conn.execute(
+            text("SELECT 1 FROM pg_roles WHERE rolname = :role"), {"role": APP_TEST_ROLE}
+        ).first()
+        if not exists:
+            conn.execute(
+                text(
+                    f"CREATE ROLE {APP_TEST_ROLE} LOGIN PASSWORD '{APP_TEST_PASSWORD}'"
+                    " IN ROLE gri_app"
+                )
+            )
+    engine.dispose()
+    url = make_url(migrated_postgres_url).set(username=APP_TEST_ROLE, password=APP_TEST_PASSWORD)
+    return url.render_as_string(hide_password=False)
+
+
+@pytest.fixture(scope="session")
+async def app_engine(app_database_url: str) -> AsyncIterator[AsyncEngine]:
+    engine = create_engine(app_database_url)
     yield engine
     await engine.dispose()
 

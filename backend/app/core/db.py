@@ -1,16 +1,19 @@
 """Database engine, session factory and the declarative base for all ORM models."""
 
 from collections.abc import AsyncIterator
+from dataclasses import dataclass
+from typing import Any
+from uuid import UUID
 
 from fastapi import Request
-from sqlalchemy import MetaData
+from sqlalchemy import Connection, MetaData, event, text
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, Session, SessionTransaction
 
 # Deterministic constraint names so Alembic autogenerate produces stable migrations.
 NAMING_CONVENTION = {
@@ -52,3 +55,48 @@ async def get_session(request: Request) -> AsyncIterator[AsyncSession]:
     factory: async_sessionmaker[AsyncSession] = request.app.state.session_factory
     async for session in session_scope(factory):
         yield session
+
+
+@dataclass(frozen=True, slots=True)
+class RequestContext:
+    """Who is acting, and in which organization. Row-level security policies read this."""
+
+    organization_id: UUID | None
+    user_id: UUID | None
+    is_platform_admin: bool = False
+
+
+_CONTEXT_KEY = "request_context"
+
+# Transaction-local settings (is_local=true): they end with the transaction, so a pooled
+# connection never carries one request's tenant into the next. The SQL functions
+# app_current_org_id(), app_current_user_id() and app_is_platform_admin() read them.
+_SET_CONTEXT_SQL = text(
+    "SELECT set_config('app.current_org_id', :org, true),"
+    " set_config('app.current_user_id', :user, true),"
+    " set_config('app.is_platform_admin', :admin, true)"
+)
+
+
+def _context_params(ctx: RequestContext) -> dict[str, str]:
+    return {
+        "org": str(ctx.organization_id) if ctx.organization_id else "",
+        "user": str(ctx.user_id) if ctx.user_id else "",
+        "admin": "true" if ctx.is_platform_admin else "false",
+    }
+
+
+async def bind_request_context(session: AsyncSession, ctx: RequestContext) -> None:
+    """Scope `session` to `ctx`, now and for every later transaction it begins."""
+    session.info[_CONTEXT_KEY] = ctx
+    if session.in_transaction():
+        await session.execute(_SET_CONTEXT_SQL, _context_params(ctx))
+
+
+@event.listens_for(Session, "after_begin")
+def _apply_request_context(
+    session: Session, _transaction: SessionTransaction, connection: Connection
+) -> None:
+    ctx: Any = session.info.get(_CONTEXT_KEY)
+    if isinstance(ctx, RequestContext):
+        connection.execute(_SET_CONTEXT_SQL, _context_params(ctx))

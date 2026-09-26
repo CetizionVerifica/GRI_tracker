@@ -45,6 +45,11 @@ uv run alembic upgrade head
 uv run uvicorn app.main:app --reload   # docs at http://localhost:8000/docs
 ```
 
+The app connects as `gri_api`, a member of the `gri_app` role, which is subject to row-level
+security. Migrations run as the owner (`MIGRATION_DATABASE_URL`). `gri_api` is created by
+`infra/postgres/initdb/` only when the Postgres volume is first created. For a volume that
+already exists, run `docker compose down -v` (this deletes local data) or create the role by hand.
+
 Set `POSTGRES_PORT`, `REDIS_PORT`, `MINIO_PORT` or `MINIO_CONSOLE_PORT` before `docker compose up` to
 change host ports (update the matching URL in `.env`). The `minio-init` service creates the bucket.
 
