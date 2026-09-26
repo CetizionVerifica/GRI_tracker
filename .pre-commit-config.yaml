@@ -1,0 +1,25 @@
+# Install once: uvx pre-commit install
+# Hooks run the project's own ruff/mypy (via uv) so versions and config match CI.
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: bash -c 'cd backend && uv run ruff format --force-exclude "${@#backend/}"' --
+        language: system
+        types_or: [python, pyi]
+        files: ^backend/
+      - id: ruff-check
+        name: ruff check
+        entry: bash -c 'cd backend && uv run ruff check --fix --force-exclude "${@#backend/}"' --
+        language: system
+        types_or: [python, pyi]
+        files: ^backend/
+      - id: mypy
+        name: mypy
+        # Checks the staged files (and whatever they import), not untracked work in progress.
+        # CI runs mypy over the whole project.
+        entry: bash -c 'cd backend && uv run mypy "${@#backend/}"' --
+        language: system
+        types_or: [python, pyi]
+        files: ^backend/

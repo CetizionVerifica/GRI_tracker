@@ -1,3 +1,4 @@
+import os
 from collections.abc import AsyncIterator, Iterator
 
 import pytest
@@ -13,7 +14,13 @@ from app.main import create_app
 
 @pytest.fixture(scope="session")
 def postgres_url() -> Iterator[str]:
-    """A real PostgreSQL for the whole test session (requires Docker)."""
+    """A real PostgreSQL for the whole test session.
+
+    Uses TEST_DATABASE_URL when set (CI's service container), else a testcontainer (needs Docker).
+    """
+    if url := os.environ.get("TEST_DATABASE_URL"):
+        yield url
+        return
     with PostgresContainer("postgres:16", driver="psycopg") as pg:
         yield pg.get_connection_url()
 
