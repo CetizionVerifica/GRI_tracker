@@ -1,0 +1,9 @@
+# Test fixture only. Not GRI content.
+dimensions:
+  - code: test_gas
+    name: Test gas
+    values:
+      - {code: gas_a, label: Gas A}
+      - {code: gas_b, label: Gas B}
+  - code: site
+    name: Site

@@ -5,7 +5,7 @@ import pytest
 from httpx import AsyncClient
 
 from app.core.ids import uuid7
-from tests.tenancy.conftest import World
+from tests.world import World
 
 pytestmark = pytest.mark.integration
 

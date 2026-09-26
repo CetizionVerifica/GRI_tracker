@@ -20,6 +20,8 @@ from app.core.config import Settings
 from app.core.db import create_engine
 from app.main import create_app
 
+pytest_plugins = ["tests.world"]  # the tenancy world fixtures, shared by all modules' tests
+
 MINIO_IMAGE = (
     "pgsty/minio:RELEASE.2026-08-04T00-00-00Z"  # keep in sync with infra/docker-compose.yml
 )

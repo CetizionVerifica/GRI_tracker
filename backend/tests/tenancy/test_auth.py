@@ -6,7 +6,7 @@ from sqlalchemy import text
 
 from app.core.auth import new_session_token
 from app.core.ids import uuid7
-from tests.tenancy.conftest import PASSWORD, Seed, World, problem_code
+from tests.world import PASSWORD, Seed, World, problem_code
 
 pytestmark = pytest.mark.integration
 

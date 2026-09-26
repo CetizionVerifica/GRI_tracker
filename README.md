@@ -68,6 +68,24 @@ Organization data lives under `/api/v1/organizations/{organization_id}/...`. Non
 404, so other organizations' existence is never revealed. Platform admins can reach every
 organization; only they create organizations and users, and only they grant or revoke `auditor`.
 
+## GRI catalog
+
+Standards, disclosures, metric definitions and dimensions are data, seeded from
+`backend/catalog/*.yaml` (see `backend/tests/catalog/fixtures/` for the format). Seeding runs as
+the schema owner, validates every file first (units via pint, decimals as strings, no floats) and
+applies everything in one transaction:
+
+```bash
+cd backend
+uv run python -m app.modules.catalog.seed
+```
+
+Re-running is safe. Names, titles and requirements can be updated. A metric's type, unit,
+validation rules, dimensions or disclosure never change once seeded: retire it (`retired: true`)
+and add a new code. Organizations can add their own metrics, dimensions and dimension values
+(codes start with `custom.`); they never see each other's. Extra pint unit definitions go in
+`backend/catalog/units.txt`.
+
 ## Health and observability
 
 - `GET /health/live`: liveness; 200 whenever the process is serving. Never checks dependencies.
