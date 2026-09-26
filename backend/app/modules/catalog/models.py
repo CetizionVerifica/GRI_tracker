@@ -38,6 +38,7 @@ class DataType(StrEnum):
     BOOLEAN = "boolean"
     TEXT = "text"
     CHOICE = "choice"
+    MULTI_CHOICE = "multi_choice"  # several of the allowed choices, e.g. "gases included"
     DATE = "date"
 
 
@@ -161,8 +162,10 @@ class DimensionValue(UUIDPrimaryKey, Base):
 class MetricDefinition(UUIDPrimaryKey, Timestamps, Base):
     """What to collect for a disclosure: type, unit, validation and whether it is required.
 
-    data_type, unit, validation_rules and the dimensions never change after creation: collected
-    data depends on them. To change one, retire the metric and create a new one.
+    data_type, unit, validation_rules, calculated and the dimensions never change after
+    creation: collected data depends on them. To change one, retire the metric and create a new
+    one. A calculated metric is produced by the calculation module from other metrics and is
+    never entered by hand.
     """
 
     __tablename__ = "metric_definition"
@@ -202,6 +205,7 @@ class MetricDefinition(UUIDPrimaryKey, Timestamps, Base):
     validation_rules: Mapped[dict[str, Any]] = mapped_column(
         JSONB, server_default=text("'{}'::jsonb")
     )
+    calculated: Mapped[bool] = mapped_column(server_default=text("false"))
     sort_order: Mapped[int] = mapped_column(Integer, server_default=text("0"))
     retired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 

@@ -89,14 +89,15 @@ class ValidationRules(Input):
             DataType.INTEGER: {"minimum", "maximum"},
             DataType.TEXT: {"max_length"},
             DataType.CHOICE: {"choices"},
+            DataType.MULTI_CHOICE: {"choices"},
             DataType.BOOLEAN: set(),
             DataType.DATE: set(),
         }[data_type]
         used = {name for name, value in self if value is not None}
         if extra := used - allowed:
             raise ValueError(f"rules {sorted(extra)} do not apply to {data_type} metrics")
-        if data_type == DataType.CHOICE and self.choices is None:
-            raise ValueError("choice metrics need choices")
+        if data_type in (DataType.CHOICE, DataType.MULTI_CHOICE) and self.choices is None:
+            raise ValueError(f"{data_type} metrics need choices")
         if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
             raise ValueError("minimum must not exceed maximum")
         if data_type == DataType.INTEGER and any(
@@ -245,6 +246,7 @@ class MetricOut(Output):
     unit: str | None
     requirement: Requirement
     validation_rules: dict[str, Any]
+    is_calculated: bool
     is_custom: bool
     retired_at: datetime | None
     dimensions: list[MetricDimensionOut]
@@ -286,6 +288,7 @@ class SeedMetric(Input):
     requirement: Requirement
     validation: ValidationRules = Field(default_factory=ValidationRules)
     dimensions: list[SeedMetricDimension] = Field(default_factory=list)
+    calculated: bool = False  # produced by the calculation module, never entered by hand
     retired: bool = False
 
     @model_validator(mode="after")

@@ -55,6 +55,8 @@ def test_float_bounds_are_rejected() -> None:
         (DataType.INTEGER, {"minimum": "0.5"}, "whole-number"),
         (DataType.TEXT, {"minimum": "0"}, "do not apply"),
         (DataType.CHOICE, {}, "need choices"),
+        (DataType.MULTI_CHOICE, {}, "need choices"),
+        (DataType.MULTI_CHOICE, {"minimum": "0", "choices": ["a"]}, "do not apply"),
         (DataType.BOOLEAN, {"max_length": 3}, "do not apply"),
     ],
 )

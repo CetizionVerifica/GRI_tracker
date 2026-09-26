@@ -152,6 +152,7 @@ async def test_get_metric(api: AsyncClient, world: World, catalog: Catalog) -> N
     )
 
     assert response.json()["validation_rules"] == {"choices": ["measured", "estimated"]}
+    assert response.json()["is_calculated"] is False
 
 
 async def test_get_other_tenants_custom_metric_is_404(

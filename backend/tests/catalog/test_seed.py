@@ -180,6 +180,8 @@ async def test_descriptive_changes_update_in_place(
         ('maximum: "1000000.5"', 'maximum: "2000000"', "validation"),
         ("required: true}]", "required: false}]", "dimensions"),
         ("data_type: integer", "data_type: decimal", "data_type"),
+        ("data_type: choice", "data_type: multi_choice", "data_type"),
+        ("name: Method used\n", "name: Method used\n        calculated: true\n", "calculated"),
     ],
 )
 @pytest.mark.usefixtures("catalog")

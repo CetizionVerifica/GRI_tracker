@@ -255,6 +255,7 @@ async def _seed_metric(
             unit=seed.unit,
             requirement=seed.requirement,
             validation_rules=rules,
+            calculated=seed.calculated,
             sort_order=position,
             retired_at=_retired_at(seed.retired, None),
         )
@@ -280,6 +281,7 @@ async def _seed_metric(
         "data_type": (metric.data_type, seed.data_type),
         "unit": (metric.unit, seed.unit),
         "validation": (metric.validation_rules, rules),
+        "calculated": (metric.calculated, seed.calculated),
         "dimensions": (
             [(d.code, link.is_required) for link, d in existing_links],
             [(d.code, d.required) for d in seed.dimensions],
@@ -346,6 +348,7 @@ async def _metrics_out(session: AsyncSession, metrics: list[MetricDefinition]) -
             unit=m.unit,
             requirement=Requirement(m.requirement),
             validation_rules=m.validation_rules,
+            is_calculated=m.calculated,
             is_custom=m.organization_id is not None,
             retired_at=m.retired_at,
             dimensions=[
