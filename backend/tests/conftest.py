@@ -28,7 +28,7 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 
 # Test-only login role in gri_app: like the real app, it is subject to row-level security.
 APP_TEST_ROLE = "gri_api_test"
-APP_TEST_PASSWORD = "gri_api_test"  # noqa: S105  (throwaway test database)
+APP_TEST_PASSWORD = "gri_api_test"
 
 
 def unused_port() -> int:

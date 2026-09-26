@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     s3_secret_key: SecretStr = SecretStr("minio-dev-password")
     s3_bucket: str = "gri-kpi"
 
+    session_ttl_minutes: int = Field(default=720, gt=0)  # lifetime of a login token
+
     health_check_timeout_seconds: float = Field(default=2.0, gt=0)
 
 

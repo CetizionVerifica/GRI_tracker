@@ -2,18 +2,22 @@
 
 from collections.abc import AsyncIterator
 from dataclasses import dataclass
-from typing import Any
+from datetime import datetime
+from typing import Annotated, Any
 from uuid import UUID
 
-from fastapi import Request
-from sqlalchemy import Connection, MetaData, event, text
+from fastapi import Depends, Request
+from sqlalchemy import Connection, DateTime, FetchedValue, MetaData, event, func, text
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
-from sqlalchemy.orm import DeclarativeBase, Session, SessionTransaction
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, SessionTransaction, mapped_column
+
+from app.core.ids import uuid7
 
 # Deterministic constraint names so Alembic autogenerate produces stable migrations.
 NAMING_CONVENTION = {
@@ -27,6 +31,26 @@ NAMING_CONVENTION = {
 
 class Base(DeclarativeBase):
     metadata = MetaData(naming_convention=NAMING_CONVENTION)
+
+
+class UUIDPrimaryKey:
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid7)
+
+
+class Timestamps:
+    """created_at and updated_at from the database clock; a trigger maintains updated_at."""
+
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), server_onupdate=FetchedValue()
+    )
+
+
+def violated_constraint(exc: IntegrityError) -> str | None:
+    """Name of the constraint behind an IntegrityError, for mapping it to a domain error."""
+    diag = getattr(exc.orig, "diag", None)
+    name: str | None = getattr(diag, "constraint_name", None)
+    return name
 
 
 def create_engine(database_url: str) -> AsyncEngine:
@@ -100,3 +124,6 @@ def _apply_request_context(
     ctx: Any = session.info.get(_CONTEXT_KEY)
     if isinstance(ctx, RequestContext):
         connection.execute(_SET_CONTEXT_SQL, _context_params(ctx))
+
+
+DbSession = Annotated[AsyncSession, Depends(get_session)]

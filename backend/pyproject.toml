@@ -7,6 +7,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "aioboto3>=15.5.0",
     "alembic>=1.20.0",
+    "argon2-cffi>=25.1.0",
     "fastapi>=0.141.1",
     "psycopg[binary]>=3.3.6",
     "pydantic>=2.13.5",
@@ -56,7 +57,7 @@ select = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]  # assert is fine in tests
+"tests/**" = ["S101", "S105", "S106"]  # asserts and fake passwords are fine in tests
 
 [tool.ruff.lint.isort]
 known-third-party = ["alembic"]  # not the local alembic/ migrations folder
