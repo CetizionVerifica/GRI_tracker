@@ -1,0 +1,337 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 403
+  title: Occupational Health and Safety
+  version: '2018'
+  effective_date: 2021-01-01
+disclosures:
+- code: 403-1
+  title: Occupational health and safety management system
+  metrics:
+  - code: gri403_2018.1.a.system_implemented
+    name: OHS management system implemented
+    description: GRI 403-1-a.
+    data_type: boolean
+    requirement: required
+  - code: gri403_2018.1.a.i.legal_requirements
+    name: Legal requirements behind the system
+    description: GRI 403-1-a-i.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri403_2018.1.a.ii.standards_used
+    name: Risk management or management system standards used
+    description: GRI 403-1-a-ii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri403_2018.1.b.scope
+    name: Workers, activities and workplaces covered, and exclusions
+    description: GRI 403-1-b.
+    data_type: text
+    requirement: required
+- code: 403-2
+  title: Hazard identification, risk assessment, and incident investigation
+  metrics:
+  - code: gri403_2018.2.a.hazard_processes
+    name: Hazard identification and risk assessment processes
+    description: GRI 403-2-a.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.2.b.hazard_reporting
+    name: How workers report hazards; protection against reprisal
+    description: GRI 403-2-b.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.2.c.right_to_withdraw
+    name: How workers remove themselves from unsafe work
+    description: GRI 403-2-c.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.2.d.incident_investigation
+    name: Incident investigation processes
+    description: GRI 403-2-d.
+    data_type: text
+    requirement: required
+- code: 403-3
+  title: Occupational health services
+  metrics:
+  - code: gri403_2018.3.a.health_services
+    name: Occupational health services and access
+    description: GRI 403-3-a.
+    data_type: text
+    requirement: required
+- code: 403-4
+  title: Worker participation, consultation, and communication on occupational health and safety
+  metrics:
+  - code: gri403_2018.4.a.participation
+    name: Worker participation, consultation and communication
+    description: GRI 403-4-a.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.4.b.joint_committees
+    name: Joint management-worker health and safety committees
+    description: GRI 403-4-b.
+    data_type: text
+    requirement: required_if_applicable
+- code: 403-5
+  title: Worker training on occupational health and safety
+  metrics:
+  - code: gri403_2018.5.a.training
+    name: OHS training provided to workers
+    description: GRI 403-5-a.
+    data_type: text
+    requirement: required
+- code: 403-6
+  title: Promotion of worker health
+  metrics:
+  - code: gri403_2018.6.a.healthcare_access
+    name: Access to non-occupational medical and healthcare services
+    description: GRI 403-6-a.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.6.b.health_promotion
+    name: Voluntary health promotion services and programs
+    description: GRI 403-6-b.
+    data_type: text
+    requirement: required
+- code: 403-7
+  title: Prevention and mitigation of occupational health and safety impacts directly linked by business
+    relationships
+  metrics:
+  - code: gri403_2018.7.a.business_relationship_approach
+    name: Approach to OHS impacts linked by business relationships
+    description: GRI 403-7-a.
+    data_type: text
+    requirement: required
+- code: 403-8
+  title: Workers covered by an occupational health and safety management system
+  metrics:
+  - code: gri403_2018.8.a.i.covered
+    name: Employees and workers covered by the system
+    description: GRI 403-8-a-i. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri403_2018.8.a.i.covered_share
+    name: Share covered by the system
+    description: GRI 403-8-a-i.
+    data_type: decimal
+    unit: percent
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri403_2018.8.a.ii.covered_internally_audited
+    name: Covered by an internally audited system
+    description: GRI 403-8-a-ii. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri403_2018.8.a.ii.covered_internally_audited_share
+    name: Share covered by an internally audited system
+    description: GRI 403-8-a-ii.
+    data_type: decimal
+    unit: percent
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri403_2018.8.a.iii.covered_externally_audited
+    name: Covered by an externally audited or certified system
+    description: GRI 403-8-a-iii. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri403_2018.8.a.iii.covered_externally_audited_share
+    name: Share covered by an externally audited or certified system
+    description: GRI 403-8-a-iii.
+    data_type: decimal
+    unit: percent
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri403_2018.8.b.exclusions
+    name: Whether and why workers were excluded
+    description: GRI 403-8-b.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.8.c.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 403-8-c.
+    data_type: text
+    requirement: required
+- code: 403-9
+  title: Work-related injuries
+  metrics:
+  - code: gri403_2018.9.a.i.injury_fatalities
+    name: Fatalities from work-related injury
+    description: GRI 403-9-a-i. 403-9-a (employees) and 403-9-b (other workers) via worker_group.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.i.injury_fatality_rate
+    name: Rate of fatalities from work-related injury
+    description: GRI 403-9-a-i. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    calculated: true
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.ii.high_consequence_injuries
+    name: High-consequence work-related injuries (excluding fatalities)
+    description: GRI 403-9-a-ii.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.ii.high_consequence_injury_rate
+    name: Rate of high-consequence work-related injuries
+    description: GRI 403-9-a-ii. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    calculated: true
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.iii.recordable_injuries
+    name: Recordable work-related injuries
+    description: GRI 403-9-a-iii.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.iii.recordable_injury_rate
+    name: Rate of recordable work-related injuries
+    description: GRI 403-9-a-iii. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    calculated: true
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.iv.main_injury_types
+    name: Main types of work-related injury
+    description: GRI 403-9-a-iv.
+    data_type: text
+    requirement: required
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.a.v.hours_worked
+    name: Hours worked
+    description: GRI 403-9-a-v.
+    data_type: decimal
+    unit: h
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.9.c.high_consequence_hazards
+    name: Hazards posing a risk of high-consequence injury
+    description: GRI 403-9-c.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.9.d.other_hazard_actions
+    name: Actions on other work-related hazards
+    description: GRI 403-9-d.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.9.e.rate_basis
+    name: Rates calculated per 200,000 or 1,000,000 hours worked
+    description: GRI 403-9-e.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - per_200000_hours
+      - per_1000000_hours
+  - code: gri403_2018.9.f.exclusions
+    name: Whether and why workers were excluded
+    description: GRI 403-9-f.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.9.g.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 403-9-g.
+    data_type: text
+    requirement: required
+- code: 403-10
+  title: Work-related ill health
+  metrics:
+  - code: gri403_2018.10.a.i.ill_health_fatalities
+    name: Fatalities from work-related ill health
+    description: GRI 403-10-a-i. 403-10-a (employees) and 403-10-b (other workers) via worker_group.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.10.a.ii.recordable_ill_health
+    name: Cases of recordable work-related ill health
+    description: GRI 403-10-a-ii.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.10.a.iii.main_ill_health_types
+    name: Main types of work-related ill health
+    description: GRI 403-10-a-iii.
+    data_type: text
+    requirement: required
+    dimensions:
+    - code: worker_group
+      required: true
+  - code: gri403_2018.10.c.ill_health_hazards
+    name: Hazards posing a risk of ill health
+    description: GRI 403-10-c.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.10.d.exclusions
+    name: Whether and why workers were excluded
+    description: GRI 403-10-d.
+    data_type: text
+    requirement: required
+  - code: gri403_2018.10.e.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 403-10-e.
+    data_type: text
+    requirement: required

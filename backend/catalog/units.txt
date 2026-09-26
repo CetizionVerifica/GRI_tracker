@@ -8,3 +8,12 @@ CO2e = [carbon_dioxide_equivalent] = CO2eq
 # Shorthand spellings, the same units as "t CO2e" and "kg CO2e".
 tCO2e = metric_ton * CO2e
 kgCO2e = kilogram * CO2e
+
+# Ozone-depleting substances in CFC-11 equivalent (GRI 305-6): its own dimension, like CO2e.
+# Written "t CFC11e".
+CFC11e = [cfc11_equivalent]
+
+# Money in the organization's reporting currency. A dimension of its own, so amounts never mix
+# with physical quantities. The currency is set once per organization, never per value, and the
+# platform does no currency conversion.
+currency_unit = [currency]

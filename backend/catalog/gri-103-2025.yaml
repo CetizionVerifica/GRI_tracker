@@ -1,0 +1,223 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 103
+  title: Energy
+  version: '2025'
+  effective_date: 2027-01-01
+disclosures:
+- code: 103-1
+  title: Energy policies and commitments
+  metrics:
+  - code: gri103_2025.1.a.policy_contribution
+    name: How energy policies and commitments contribute to reduction, efficiency and the renewable transition
+    description: GRI 103-1-a.
+    data_type: text
+    requirement: required
+  - code: gri103_2025.1.b.impacts
+    name: Impacts from energy consumption and the renewable transition
+    description: GRI 103-1-b.
+    data_type: text
+    requirement: required
+- code: 103-2
+  title: Energy consumption and self-generation within the organization
+  metrics:
+  - code: gri103_2025.2.a.fuel_consumption
+    name: Fuel consumption
+    description: GRI 103-2-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_renewability
+      required: true
+    - code: energy_source
+      required: true
+    - code: activity
+      required: true
+  - code: gri103_2025.2.b.purchased_energy_consumption
+    name: Purchased electricity, heating, cooling and steam consumption
+    description: GRI 103-2-b.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_renewability
+      required: true
+    - code: energy_carrier
+      required: true
+  - code: gri103_2025.2.c.self_generated_renewable_consumption
+    name: Self-generated renewable electricity, heating, cooling and steam consumed
+    description: GRI 103-2-c.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_carrier
+      required: true
+    - code: energy_source
+      required: true
+    - code: activity
+      required: true
+  - code: gri103_2025.2.d.self_generated_sold
+    name: Self-generated electricity, heating, cooling and steam sold
+    description: GRI 103-2-d.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_renewability
+      required: true
+    - code: energy_carrier
+      required: true
+  - code: gri103_2025.2.e.uses_contractual_instruments
+    name: Contractual instruments used for purchased energy
+    description: GRI 103-2-e.
+    data_type: boolean
+    requirement: required
+  - code: gri103_2025.2.e.contractual_instrument_quality
+    name: How contractual instruments meet quality criteria
+    description: GRI 103-2-e.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri103_2025.2.f.methodology
+    name: Standards, methodologies, assumptions, tools and conversion factors
+    description: GRI 103-2-f.
+    data_type: text
+    requirement: required
+- code: 103-3
+  title: Upstream and downstream energy consumption
+  metrics:
+  - code: gri103_2025.3.a.value_chain_energy
+    name: Significant upstream and downstream energy consumption
+    description: GRI 103-3-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri103_2025.3.a.value_chain_categories
+    name: Categories with significant energy consumption
+    description: GRI 103-3-a.
+    data_type: text
+    requirement: required
+  - code: gri103_2025.3.b.methodology
+    name: Standards, methodologies, assumptions, tools and conversion factors
+    description: GRI 103-3-b.
+    data_type: text
+    requirement: required
+- code: 103-4
+  title: Energy intensity
+  metrics:
+  - code: gri103_2025.4.a.denominator
+    name: Organization-specific metric (denominator) for each ratio
+    description: GRI 103-4-a. The intensity ratio is calculated from the numerator metrics and the organization's
+      own denominator metric (a custom metric).
+    data_type: text
+    requirement: required
+  - code: gri103_2025.4.b.boundary
+    name: Within the organization, value chain, or both
+    description: GRI 103-4-b.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - within
+      - value_chain
+      - both
+  - code: gri103_2025.4.c.energy_types
+    name: Types of energy consumption included
+    description: GRI 103-4-c.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: &id001
+      - fuel
+      - electricity
+      - heating
+      - cooling
+      - steam
+- code: 103-5
+  title: Reduction in energy consumption
+  metrics:
+  - code: gri103_2025.5.a.reduction
+    name: Reduction in energy consumption
+    description: GRI 103-5-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri103_2025.5.a.reduction_attribution
+    name: Whether and how due to initiatives or other factors
+    description: GRI 103-5-a.
+    data_type: text
+    requirement: required
+  - code: gri103_2025.5.b.energy_types
+    name: Types of energy consumption included
+    description: GRI 103-5-b.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: *id001
+  - code: gri103_2025.5.c.boundary
+    name: Within the organization, value chain, or both
+    description: GRI 103-5-c.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - within
+      - value_chain
+      - both
+  - code: gri103_2025.5.c.value_chain_categories
+    name: Value chain categories where reduction was achieved
+    description: GRI 103-5-c.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri103_2025.5.d.measurement_basis
+    name: Estimated, modeled, or directly measured
+    description: GRI 103-5-d.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - estimated
+      - modeled
+      - measured
+  - code: gri103_2025.5.d.estimation_methods
+    name: Estimation or modeling methods used
+    description: GRI 103-5-d.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri103_2025.5.e.baseline
+    name: Base year or baseline
+    description: GRI 103-5-e.
+    data_type: text
+    requirement: required
+  - code: gri103_2025.5.e.i.baseline_rationale
+    name: Rationale for choosing it
+    description: GRI 103-5-e-i.
+    data_type: text
+    requirement: required
+  - code: gri103_2025.5.e.ii.baseline_consumption
+    name: Energy consumption in the base year or baseline
+    description: GRI 103-5-e-ii.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri103_2025.5.f.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 103-5-f.
+    data_type: text
+    requirement: required

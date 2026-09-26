@@ -1,0 +1,220 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+# NOTE: effective_date 2018-07-01 confirmed by the reviewer (the PDF only states the end date).
+standard:
+  code: GRI 302
+  title: Energy
+  version: '2016'
+  effective_date: 2018-07-01
+  effective_until: 2026-12-31
+disclosures:
+- code: 302-1
+  title: Energy consumption within the organization
+  metrics:
+  - code: gri302_2016.1.a.fuel_non_renewable
+    name: Fuel consumption from non-renewable sources
+    description: GRI 302-1-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_source
+      required: false
+  - code: gri302_2016.1.b.fuel_renewable
+    name: Fuel consumption from renewable sources
+    description: GRI 302-1-b.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: energy_source
+      required: false
+  - code: gri302_2016.1.c.i.electricity_consumption
+    name: Electricity consumption
+    description: GRI 302-1-c-i.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.c.ii.heating_consumption
+    name: Heating consumption
+    description: GRI 302-1-c-ii.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.c.iii.cooling_consumption
+    name: Cooling consumption
+    description: GRI 302-1-c-iii.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.c.iv.steam_consumption
+    name: Steam consumption
+    description: GRI 302-1-c-iv.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.d.i.electricity_sold
+    name: Electricity sold
+    description: GRI 302-1-d-i.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.d.ii.heating_sold
+    name: Heating sold
+    description: GRI 302-1-d-ii.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.d.iii.cooling_sold
+    name: Cooling sold
+    description: GRI 302-1-d-iii.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.d.iv.steam_sold
+    name: Steam sold
+    description: GRI 302-1-d-iv.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.1.e.total_energy_consumption
+    name: Total energy consumption within the organization
+    description: GRI 302-1-e. Calculated by the calculation module; never entered by hand. Formula in
+      GRI 302 clause 2.1.4.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+    calculated: true
+  - code: gri302_2016.1.f.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 302-1-f.
+    data_type: text
+    requirement: required
+  - code: gri302_2016.1.g.conversion_factor_source
+    name: Source of the conversion factors used
+    description: GRI 302-1-g.
+    data_type: text
+    requirement: required
+- code: 302-2
+  title: Energy consumption outside of the organization
+  metrics:
+  - code: gri302_2016.2.a.energy_outside
+    name: Energy consumption outside of the organization
+    description: GRI 302-2-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.2.b.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 302-2-b.
+    data_type: text
+    requirement: required
+  - code: gri302_2016.2.c.conversion_factor_source
+    name: Source of the conversion factors used
+    description: GRI 302-2-c.
+    data_type: text
+    requirement: required
+- code: 302-3
+  title: Energy intensity
+  metrics:
+  - code: gri302_2016.3.b.denominator
+    name: Organization-specific metric (denominator)
+    description: GRI 302-3-b. The intensity ratio is calculated from the numerator metrics and the organization's
+      own denominator metric (a custom metric).
+    data_type: text
+    requirement: required
+  - code: gri302_2016.3.c.energy_types
+    name: Types of energy included in the ratio
+    description: GRI 302-3-c.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: &id001
+      - fuel
+      - electricity
+      - heating
+      - cooling
+      - steam
+  - code: gri302_2016.3.d.boundary
+    name: Consumption within, outside, or both
+    description: GRI 302-3-d.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - within
+      - outside
+      - both
+- code: 302-4
+  title: Reduction of energy consumption
+  metrics:
+  - code: gri302_2016.4.a.reduction
+    name: Reduction in energy consumption from conservation and efficiency
+    description: GRI 302-4-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.4.b.energy_types
+    name: Types of energy included in the reductions
+    description: GRI 302-4-b.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: *id001
+  - code: gri302_2016.4.c.baseline
+    name: Base year or baseline and rationale
+    description: GRI 302-4-c.
+    data_type: text
+    requirement: required
+  - code: gri302_2016.4.d.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 302-4-d.
+    data_type: text
+    requirement: required
+- code: 302-5
+  title: Reductions in energy requirements of products and services
+  metrics:
+  - code: gri302_2016.5.a.product_reduction
+    name: Reduction in energy requirements of sold products/services
+    description: GRI 302-5-a.
+    data_type: decimal
+    unit: GJ
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri302_2016.5.b.baseline
+    name: Base year or baseline and rationale
+    description: GRI 302-5-b.
+    data_type: text
+    requirement: required
+  - code: gri302_2016.5.c.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 302-5-c.
+    data_type: text
+    requirement: required

@@ -1,0 +1,193 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 401
+  title: Employment
+  version: '2016'
+  effective_date: 2018-07-01
+disclosures:
+- code: 401-1
+  title: New employee hires and employee turnover
+  metrics:
+  - code: gri401_2016.1.a.employees_end_of_period
+    name: Employees at the end of the reporting period
+    description: GRI 401-1-a. Input to a calculated metric in this disclosure. Denominator for both rates.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: age_group
+      required: true
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri401_2016.1.a.new_hires
+    name: New employee hires
+    description: GRI 401-1-a. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: age_group
+      required: true
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri401_2016.1.a.new_hire_rate
+    name: Rate of new employee hires
+    description: GRI 401-1-a. Calculated by the calculation module; never entered by hand. Uses employee
+      numbers at period end (clause 2.1).
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    calculated: true
+    dimensions:
+    - code: age_group
+      required: true
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri401_2016.1.b.turnover
+    name: Employee turnover
+    description: GRI 401-1-b. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: age_group
+      required: true
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri401_2016.1.b.turnover_rate
+    name: Rate of employee turnover
+    description: GRI 401-1-b. Calculated by the calculation module; never entered by hand. Uses employee
+      numbers at period end (clause 2.1).
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    calculated: true
+    dimensions:
+    - code: age_group
+      required: true
+    - code: gender
+      required: true
+    - code: region
+      required: true
+- code: 401-2
+  title: Benefits provided to full-time employees that are not provided to temporary or part-time employees
+  metrics:
+  - code: gri401_2016.2.a.benefits_not_provided
+    name: Full-time benefits not given to temporary or part-time employees
+    description: GRI 401-2-a.
+    data_type: text
+    requirement: required
+    dimensions:
+    - code: significant_location
+      required: true
+  - code: gri401_2016.2.b.significant_location_definition
+    name: Definition of 'significant locations of operation'
+    description: GRI 401-2-b.
+    data_type: text
+    requirement: required
+- code: 401-3
+  title: Parental leave
+  metrics:
+  - code: gri401_2016.3.a.entitled
+    name: Employees entitled to parental leave
+    description: GRI 401-3-a.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.b.took_leave
+    name: Employees that took parental leave
+    description: GRI 401-3-b.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.c.returned
+    name: Employees that returned after parental leave ended
+    description: GRI 401-3-c.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.d.retained_12_months
+    name: Returned employees still employed 12 months later
+    description: GRI 401-3-d.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.e.due_to_return
+    name: Employees due to return to work after parental leave
+    description: GRI 401-3-e. Input to a calculated metric in this disclosure. Denominator for the return
+      to work rate.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.e.return_to_work_rate
+    name: Return to work rate
+    description: GRI 401-3-e. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    calculated: true
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri401_2016.3.e.retention_rate
+    name: Retention rate
+    description: GRI 401-3-e. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    calculated: true
+    dimensions:
+    - code: gender
+      required: true

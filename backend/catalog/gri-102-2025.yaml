@@ -1,0 +1,671 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 102
+  title: Climate Change
+  version: '2025'
+  effective_date: 2027-01-01
+disclosures:
+- code: 102-1
+  title: Transition plan for climate change mitigation
+  metrics:
+  - code: gri102_2025.1.a.transition_plan
+    name: Transition plan, including mitigation policies and actions
+    description: GRI 102-1-a.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.b.scientific_alignment
+    name: Alignment with 1.5°C evidence; scenarios and methods
+    description: GRI 102-1-b.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.c.plan_expenditure
+    name: Expenditure on implementing the transition plan
+    description: GRI 102-1-c. Amount in the organization's reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.1.c.plan_expenditure_share
+    name: Transition plan expenditure as % of total expenditure
+    description: GRI 102-1-c.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri102_2025.1.d.oversight
+    name: Governance bodies or roles overseeing the plan
+    description: GRI 102-1-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.e.strategy_embedding
+    name: How the plan is embedded in business strategy
+    description: GRI 102-1-e.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.f.targets
+    name: Targets to achieve the plan and progress
+    description: GRI 102-1-f. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.g.just_transition
+    name: Alignment with just transition principles; engagement
+    description: GRI 102-1-g.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.h.implementation_impacts
+    name: Impacts on people and environment from implementation
+    description: GRI 102-1-h.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.i.public_policy_consistency
+    name: Consistency of public policy activities with the plan
+    description: GRI 102-1-i.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.1.j.no_plan_explanation
+    name: Why no transition plan exists; steps and timeframe
+    description: GRI 102-1-j.
+    data_type: text
+    requirement: required_if_applicable
+- code: 102-2
+  title: Climate change adaptation plan
+  metrics:
+  - code: gri102_2025.2.a.risk_impacts
+    name: Impacts associated with climate risks and opportunities
+    description: GRI 102-2-a.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.2.b.adaptation_plan
+    name: Adaptation plan (policies, scenarios, oversight, targets)
+    description: GRI 102-2-b.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.2.b.iii.plan_expenditure
+    name: Expenditure on implementing the adaptation plan
+    description: GRI 102-2-b-iii. Amount in the organization's reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.2.b.iii.plan_expenditure_share
+    name: Adaptation plan expenditure as % of total expenditure
+    description: GRI 102-2-b-iii.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri102_2025.2.c.implementation_impacts
+    name: Impacts on people and environment from implementation
+    description: GRI 102-2-c.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.2.d.no_plan_explanation
+    name: Why no adaptation plan exists; steps and timeframe
+    description: GRI 102-2-d.
+    data_type: text
+    requirement: required_if_applicable
+- code: 102-3
+  title: Just transition
+  metrics:
+  - code: gri102_2025.3.a.new_employees
+    name: New employees recruited
+    description: GRI 102-3-a. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: employee_type
+      required: true
+  - code: gri102_2025.3.b.employees_terminated
+    name: Employees whose work was terminated
+    description: GRI 102-3-b. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: employee_type
+      required: true
+  - code: gri102_2025.3.c.employees_redeployed
+    name: Redeployed employees
+    description: GRI 102-3-c. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: employee_type
+      required: true
+  - code: gri102_2025.3.d.employees_reskilled
+    name: Employees trained for up- and re-skilling
+    description: GRI 102-3-d. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: employee_type
+      required: true
+  - code: gri102_2025.3.e.new_non_employee_workers
+    name: New workers who are not employees recruited
+    description: GRI 102-3-e. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri102_2025.3.f.non_employee_workers_terminated
+    name: Workers who are not employees terminated
+    description: GRI 102-3-f. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+  - code: gri102_2025.3.g.new_employees_living_wage
+    name: New employees paid at or above cost-of-living
+    description: GRI 102-3-g.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.3.g.new_employees_living_wage_share
+    name: Share of new employees paid at or above cost-of-living
+    description: GRI 102-3-g.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri102_2025.3.g.living_wage_actions
+    name: Actions or commitments to close cost-of-living gaps
+    description: GRI 102-3-g.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.3.h.community_impact_locations
+    name: Locations with impacts on local communities and Indigenous Peoples
+    description: GRI 102-3-h.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.3.i.locations_with_agreements
+    name: Share of those locations with a safeguarding agreement
+    description: GRI 102-3-i.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+  - code: gri102_2025.3.j.context
+    name: Contextual information, methodologies and assumptions
+    description: GRI 102-3-j.
+    data_type: text
+    requirement: required
+- code: 102-4
+  title: GHG emissions reduction targets and progress
+  metrics:
+  - code: gri102_2025.4.a.reduction_targets
+    name: Short-, medium- and long-term gross reduction targets
+    description: GRI 102-4-a. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.b.biogenic_inclusion
+    name: Whether biogenic CO2 is included, per target
+    description: GRI 102-4-b. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.c.scope2_method
+    name: Location- or market-based method, per Scope 2 target
+    description: GRI 102-4-c. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.d.scope3_categories
+    name: Scope 3 categories covered, per Scope 3 target
+    description: GRI 102-4-d. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.e.gases_covered
+    name: Gases covered, per target
+    description: GRI 102-4-e. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.f.scientific_alignment
+    name: Alignment of targets with 1.5°C evidence
+    description: GRI 102-4-f.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.g.revision_policy
+    name: Target revision policy
+    description: GRI 102-4-g.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.h.base_years
+    name: Base year details per target
+    description: GRI 102-4-h. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.i.progress
+    name: Progress toward each target (inventory method)
+    description: GRI 102-4-i. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.j.progress_explanation
+    name: How progress was achieved, per target
+    description: GRI 102-4-j. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.4.k.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 102-4-k.
+    data_type: text
+    requirement: required
+- code: 102-5
+  title: Scope 1 GHG emissions
+  metrics:
+  - code: gri102_2025.5.a.gross_scope1
+    name: Gross Scope 1 GHG emissions
+    description: GRI 102-5-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.5.b.scope1_by_gas_mass
+    name: Gross Scope 1 emissions by gas (mass)
+    description: GRI 102-5-b.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ghg_gas
+      required: true
+  - code: gri102_2025.5.b.scope1_by_gas_co2e
+    name: Gross Scope 1 emissions by gas (CO2e)
+    description: GRI 102-5-b.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ghg_gas
+      required: true
+  - code: gri102_2025.5.c.biogenic_co2
+    name: Biogenic CO2 emissions
+    description: GRI 102-5-c.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.5.d.base_year
+    name: Base year
+    description: GRI 102-5-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.5.d.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 102-5-d-i.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.5.d.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 102-5-d-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.5.d.ii.base_year_biogenic_co2
+    name: Base-year biogenic CO2 emissions
+    description: GRI 102-5-d-ii.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.5.d.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 102-5-d-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri102_2025.5.d.iv.previous_base_year_emissions
+    name: Previously reported base-year emissions (if recalculated)
+    description: GRI 102-5-d-iv.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri102_2025.5.e.consolidation_approach
+    name: Consolidation approach
+    description: GRI 102-5-e.
+    data_type: choice
+    requirement: required
+    validation:
+      choices: &id001
+      - equity_share
+      - financial_control
+      - operational_control
+  - code: gri102_2025.5.f.methodology
+    name: Standards, methodologies, assumptions, tools and emission factors
+    description: GRI 102-5-f.
+    data_type: text
+    requirement: required
+- code: 102-6
+  title: Scope 2 GHG emissions
+  metrics:
+  - code: gri102_2025.6.a.gross_scope2_location
+    name: Gross location-based Scope 2 GHG emissions
+    description: GRI 102-6-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.a.gross_scope2_market
+    name: Gross market-based Scope 2 GHG emissions
+    description: GRI 102-6-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.b.scope2_location_by_gas_mass
+    name: Location-based Scope 2 emissions by gas (mass)
+    description: GRI 102-6-b. CO2, CH4 and N2O only.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ghg_gas
+      required: true
+  - code: gri102_2025.6.b.scope2_location_by_gas_co2e
+    name: Location-based Scope 2 emissions by gas (CO2e)
+    description: GRI 102-6-b. CO2, CH4 and N2O only.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ghg_gas
+      required: true
+  - code: gri102_2025.6.c.biogenic_co2_location
+    name: Location-based biogenic CO2 from electricity use
+    description: GRI 102-6-c.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.c.biogenic_co2_market
+    name: Market-based biogenic CO2 from electricity use
+    description: GRI 102-6-c.
+    data_type: decimal
+    unit: t
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.d.base_year
+    name: Base year
+    description: GRI 102-6-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.6.d.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 102-6-d-i.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.6.d.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 102-6-d-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.d.ii.base_year_biogenic_co2
+    name: Base-year biogenic CO2 emissions
+    description: GRI 102-6-d-ii.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.d.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 102-6-d-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri102_2025.6.d.iv.previous_base_year_emissions
+    name: Previously reported base-year emissions (if recalculated)
+    description: GRI 102-6-d-iv.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri102_2025.6.e.consolidation_approach
+    name: Consolidation approach
+    description: GRI 102-6-e.
+    data_type: choice
+    requirement: required
+    validation:
+      choices: *id001
+  - code: gri102_2025.6.f.methodology
+    name: Standards, methodologies, assumptions, tools and emission factors
+    description: GRI 102-6-f.
+    data_type: text
+    requirement: required
+- code: 102-7
+  title: Scope 3 GHG emissions
+  metrics:
+  - code: gri102_2025.7.a.gross_scope3
+    name: Gross Scope 3 GHG emissions
+    description: GRI 102-7-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.7.b.scope3_by_category
+    name: Gross Scope 3 emissions by category
+    description: GRI 102-7-b.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: scope3_category
+      required: true
+  - code: gri102_2025.7.c.biogenic_co2
+    name: Biogenic CO2 emissions in the value chain
+    description: GRI 102-7-c.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.7.c.biogenic_co2_by_category
+    name: Biogenic CO2 emissions by Scope 3 category
+    description: GRI 102-7-c.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: scope3_category
+      required: true
+  - code: gri102_2025.7.d.base_year
+    name: Base year
+    description: GRI 102-7-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.7.d.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 102-7-d-i.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.7.d.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 102-7-d-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.7.d.ii.base_year_biogenic_co2
+    name: Base-year biogenic CO2 emissions
+    description: GRI 102-7-d-ii.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri102_2025.7.d.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 102-7-d-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri102_2025.7.d.iv.previous_base_year_emissions
+    name: Previously reported base-year emissions (if recalculated)
+    description: GRI 102-7-d-iv.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri102_2025.7.e.consolidation_approach
+    name: Consolidation approach
+    description: GRI 102-7-e.
+    data_type: choice
+    requirement: required
+    validation:
+      choices: *id001
+  - code: gri102_2025.7.f.methodology
+    name: Standards, methodologies, assumptions, tools and emission factors
+    description: GRI 102-7-f.
+    data_type: text
+    requirement: required
+- code: 102-8
+  title: GHG emissions intensity
+  metrics:
+  - code: gri102_2025.8.a.denominator
+    name: Organization-specific metric (denominator) for each ratio
+    description: GRI 102-8-a. The intensity ratio is calculated from the numerator metrics and the organization's
+      own denominator metric (a custom metric).
+    data_type: text
+    requirement: required
+  - code: gri102_2025.8.b.scopes_included
+    name: Scopes included in the ratio(s)
+    description: GRI 102-8-b.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices:
+      - scope_1
+      - scope_2
+      - scope_3
+- code: 102-9
+  title: GHG removals in the value chain
+  metrics:
+  - code: gri102_2025.9.a.scope1_removals
+    name: Scope 1 GHG removals
+    description: GRI 102-9-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: storage_pool
+      required: true
+  - code: gri102_2025.9.b.non_permanence_monitoring
+    name: Quality criteria monitoring per storage pool type
+    description: GRI 102-9-b.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.9.c.intended_use
+    name: Intended use of GHG removals
+    description: GRI 102-9-c.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.9.d.removal_impacts
+    name: Impacts on people and environment from removals
+    description: GRI 102-9-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.9.e.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 102-9-e.
+    data_type: text
+    requirement: required
+- code: 102-10
+  title: Carbon credits
+  metrics:
+  - code: gri102_2025.10.a.credits_canceled
+    name: Carbon credits canceled
+    description: GRI 102-10-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: carbon_credit_project_type
+      required: true
+  - code: gri102_2025.10.b.projects
+    name: Project name/ID, type, cancelation details, host country, registry
+    description: GRI 102-10-b. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.10.c.quality_criteria
+    name: How each project meets the quality criteria
+    description: GRI 102-10-c. One entry per target or project in GRI; text until repeating groups exist.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.10.d.purpose
+    name: Purpose of carbon credit cancelation
+    description: GRI 102-10-d.
+    data_type: text
+    requirement: required
+  - code: gri102_2025.10.e.project_impacts
+    name: Impacts on people and environment, and monitoring
+    description: GRI 102-10-e.
+    data_type: text
+    requirement: required

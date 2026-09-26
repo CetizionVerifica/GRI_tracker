@@ -1,0 +1,129 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 405
+  title: Diversity and Equal Opportunity
+  version: '2016'
+  effective_date: 2018-07-01
+disclosures:
+- code: 405-1
+  title: Diversity of governance bodies and employees
+  metrics:
+  - code: gri405_2016.1.a.i.governance_by_gender
+    name: Governance body members by gender
+    description: GRI 405-1-a-i.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: governance_body
+      required: true
+    - code: gender
+      required: true
+  - code: gri405_2016.1.a.ii.governance_by_age
+    name: Governance body members by age group
+    description: GRI 405-1-a-ii.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: governance_body
+      required: true
+    - code: age_group
+      required: true
+  - code: gri405_2016.1.a.iii.governance_other_diversity
+    name: Governance body members by other diversity indicators
+    description: GRI 405-1-a-iii.
+    data_type: decimal
+    unit: percent
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: governance_body
+      required: true
+    - code: diversity_group
+      required: true
+  - code: gri405_2016.1.b.i.employees_by_gender
+    name: Employees per category by gender
+    description: GRI 405-1-b-i.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: employee_category
+      required: true
+    - code: gender
+      required: true
+  - code: gri405_2016.1.b.ii.employees_by_age
+    name: Employees per category by age group
+    description: GRI 405-1-b-ii.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: employee_category
+      required: true
+    - code: age_group
+      required: true
+  - code: gri405_2016.1.b.iii.employees_other_diversity
+    name: Employees per category by other diversity indicators
+    description: GRI 405-1-b-iii.
+    data_type: decimal
+    unit: percent
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+      maximum: '100'
+    dimensions:
+    - code: employee_category
+      required: true
+    - code: diversity_group
+      required: true
+- code: 405-2
+  title: Ratio of basic salary and remuneration of women to men
+  metrics:
+  - code: gri405_2016.2.a.basic_salary_ratio
+    name: Ratio of basic salary of women to men
+    description: GRI 405-2-a.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: employee_category
+      required: true
+    - code: significant_location
+      required: true
+  - code: gri405_2016.2.a.remuneration_ratio
+    name: Ratio of remuneration of women to men
+    description: GRI 405-2-a.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: employee_category
+      required: true
+    - code: significant_location
+      required: true
+  - code: gri405_2016.2.b.significant_location_definition
+    name: Definition of 'significant locations of operation'
+    description: GRI 405-2-b.
+    data_type: text
+    requirement: required

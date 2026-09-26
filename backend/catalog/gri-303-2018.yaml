@@ -1,0 +1,168 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 303
+  title: Water and Effluents
+  version: '2018'
+  effective_date: 2021-01-01
+disclosures:
+- code: 303-1
+  title: Interactions with water as a shared resource
+  metrics:
+  - code: gri303_2018.1.a.water_interactions
+    name: How the organization interacts with water, and impacts
+    description: GRI 303-1-a.
+    data_type: text
+    requirement: required
+  - code: gri303_2018.1.b.impact_identification
+    name: Approach used to identify water-related impacts
+    description: GRI 303-1-b.
+    data_type: text
+    requirement: required
+  - code: gri303_2018.1.c.impact_management
+    name: How water-related impacts are addressed
+    description: GRI 303-1-c.
+    data_type: text
+    requirement: required
+  - code: gri303_2018.1.d.goal_setting
+    name: Process for setting water-related goals and targets
+    description: GRI 303-1-d.
+    data_type: text
+    requirement: required
+- code: 303-2
+  title: Management of water discharge-related impacts
+  metrics:
+  - code: gri303_2018.2.a.discharge_standards
+    name: Minimum standards for effluent discharge quality
+    description: GRI 303-2-a.
+    data_type: text
+    requirement: required
+- code: 303-3
+  title: Water withdrawal
+  metrics:
+  - code: gri303_2018.3.a.withdrawal_all_areas
+    name: Water withdrawal from all areas
+    description: GRI 303-3-a. Total and the source breakdown are derived from this metric; 303-3-c quality
+      split.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: water_source
+      required: true
+    - code: water_quality
+      required: true
+  - code: gri303_2018.3.b.withdrawal_water_stress
+    name: Water withdrawal from areas with water stress
+    description: GRI 303-3-b. original_water_source breaks third-party water down by its origin (303-3-b-v).
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: water_source
+      required: true
+    - code: water_quality
+      required: true
+    - code: original_water_source
+      required: false
+  - code: gri303_2018.3.d.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 303-3-d.
+    data_type: text
+    requirement: required
+- code: 303-4
+  title: Water discharge
+  metrics:
+  - code: gri303_2018.4.a.discharge_all_areas
+    name: Water discharge to all areas
+    description: GRI 303-4-a.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: water_destination
+      required: true
+  - code: gri303_2018.4.a.iv.third_party_sent_for_use
+    name: Third-party water discharge sent to other organizations for use
+    description: GRI 303-4-a-iv.
+    data_type: decimal
+    unit: ML
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri303_2018.4.b.discharge_by_quality
+    name: Water discharge to all areas by quality
+    description: GRI 303-4-b.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: water_quality
+      required: true
+  - code: gri303_2018.4.c.discharge_water_stress
+    name: Water discharge to areas with water stress
+    description: GRI 303-4-c.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: water_quality
+      required: true
+  - code: gri303_2018.4.d.priority_substances
+    name: Priority substances of concern and discharge limits
+    description: GRI 303-4-d.
+    data_type: text
+    requirement: required
+  - code: gri303_2018.4.d.iii.discharge_limit_non_compliance
+    name: Incidents of non-compliance with discharge limits
+    description: GRI 303-4-d-iii.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri303_2018.4.e.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 303-4-e.
+    data_type: text
+    requirement: required
+- code: 303-5
+  title: Water consumption
+  metrics:
+  - code: gri303_2018.5.a.consumption_all_areas
+    name: Water consumption from all areas
+    description: GRI 303-5-a.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri303_2018.5.b.consumption_water_stress
+    name: Water consumption from areas with water stress
+    description: GRI 303-5-b.
+    data_type: decimal
+    unit: ML
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri303_2018.5.c.storage_change
+    name: Change in water storage
+    description: GRI 303-5-c.
+    data_type: decimal
+    unit: ML
+    requirement: required_if_applicable
+  - code: gri303_2018.5.d.context
+    name: Standards, methodologies and assumptions used
+    description: GRI 303-5-d.
+    data_type: text
+    requirement: required
