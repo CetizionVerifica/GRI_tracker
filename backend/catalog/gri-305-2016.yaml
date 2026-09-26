@@ -1,0 +1,337 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+# NOTE: 305-1 to 305-5 are superseded by GRI 102 from 2027-01-01 (end date 2026-12-31).
+standard:
+  code: GRI 305
+  title: Emissions
+  version: '2016'
+  effective_date: 2018-07-01
+disclosures:
+- code: 305-1
+  title: Direct (Scope 1) GHG emissions
+  effective_until: 2026-12-31
+  metrics:
+  - code: gri305_2016.1.a.gross_scope1
+    name: Gross direct (Scope 1) GHG emissions
+    description: GRI 305-1-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri305_2016.1.b.gases_included
+    name: Gases included in the calculation
+    description: GRI 305-1-b.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: &id001
+      - co2
+      - ch4
+      - n2o
+      - hfcs
+      - pfcs
+      - sf6
+      - nf3
+  - code: gri305_2016.1.c.biogenic_co2
+    name: Biogenic CO2 emissions
+    description: GRI 305-1-c.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri305_2016.1.d.base_year
+    name: Base year
+    description: GRI 305-1-d.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.1.d.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 305-1-d-i.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.1.d.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 305-1-d-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri305_2016.1.d.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 305-1-d-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.1.e.factor_sources
+    name: Source of emission factors and GWP rates
+    description: GRI 305-1-e.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.1.f.consolidation_approach
+    name: Consolidation approach
+    description: GRI 305-1-f.
+    data_type: choice
+    requirement: required
+    validation:
+      choices: &id002
+      - equity_share
+      - financial_control
+      - operational_control
+  - code: gri305_2016.1.g.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-1-g.
+    data_type: text
+    requirement: required
+- code: 305-2
+  title: Energy indirect (Scope 2) GHG emissions
+  effective_until: 2026-12-31
+  metrics:
+  - code: gri305_2016.2.a.gross_scope2_location
+    name: Gross location-based Scope 2 GHG emissions
+    description: GRI 305-2-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri305_2016.2.b.gross_scope2_market
+    name: Gross market-based Scope 2 GHG emissions
+    description: GRI 305-2-b.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri305_2016.2.c.gases_included
+    name: Gases included in the calculation
+    description: GRI 305-2-c.
+    data_type: multi_choice
+    requirement: required_if_applicable
+    validation:
+      choices: *id001
+  - code: gri305_2016.2.d.base_year
+    name: Base year
+    description: GRI 305-2-d.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.2.d.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 305-2-d-i.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.2.d.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 305-2-d-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri305_2016.2.d.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 305-2-d-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.2.e.factor_sources
+    name: Source of emission factors and GWP rates
+    description: GRI 305-2-e.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.2.f.consolidation_approach
+    name: Consolidation approach
+    description: GRI 305-2-f.
+    data_type: choice
+    requirement: required
+    validation:
+      choices: *id002
+  - code: gri305_2016.2.g.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-2-g.
+    data_type: text
+    requirement: required
+- code: 305-3
+  title: Other indirect (Scope 3) GHG emissions
+  effective_until: 2026-12-31
+  metrics:
+  - code: gri305_2016.3.a.gross_scope3
+    name: Gross other indirect (Scope 3) GHG emissions
+    description: GRI 305-3-a.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri305_2016.3.b.gases_included
+    name: Gases included in the calculation
+    description: GRI 305-3-b.
+    data_type: multi_choice
+    requirement: required_if_applicable
+    validation:
+      choices: *id001
+  - code: gri305_2016.3.c.biogenic_co2
+    name: Biogenic CO2 emissions
+    description: GRI 305-3-c.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri305_2016.3.d.categories_included
+    name: Scope 3 categories and activities included
+    description: GRI 305-3-d.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.3.e.base_year
+    name: Base year
+    description: GRI 305-3-e.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.3.e.i.base_year_rationale
+    name: Rationale for choosing the base year
+    description: GRI 305-3-e-i.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.3.e.ii.base_year_emissions
+    name: Base-year emissions
+    description: GRI 305-3-e-ii.
+    data_type: decimal
+    unit: t CO2e
+    requirement: required_if_applicable
+    validation:
+      minimum: '0'
+  - code: gri305_2016.3.e.iii.recalculation_context
+    name: Context for significant changes that triggered base-year recalculation
+    description: GRI 305-3-e-iii.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri305_2016.3.f.factor_sources
+    name: Source of emission factors and GWP rates
+    description: GRI 305-3-f.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.3.g.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-3-g.
+    data_type: text
+    requirement: required
+- code: 305-4
+  title: GHG emissions intensity
+  effective_until: 2026-12-31
+  metrics:
+  - code: gri305_2016.4.b.denominator
+    name: Organization-specific metric (denominator)
+    description: GRI 305-4-b. The intensity ratio is calculated from the numerator metrics and the organization's
+      own denominator metric (a custom metric).
+    data_type: text
+    requirement: required
+  - code: gri305_2016.4.c.scopes_included
+    name: Scopes included in the ratio
+    description: GRI 305-4-c.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: &id003
+      - scope_1
+      - scope_2
+      - scope_3
+  - code: gri305_2016.4.d.gases_included
+    name: Gases included in the calculation
+    description: GRI 305-4-d.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: *id001
+- code: 305-5
+  title: Reduction of GHG emissions
+  effective_until: 2026-12-31
+  metrics:
+  - code: gri305_2016.5.a.reductions
+    name: GHG emissions reduced by reduction initiatives
+    description: GRI 305-5-a. Reported separately per scope (GRI 305 clause 2.9.4).
+    data_type: decimal
+    unit: t CO2e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ghg_scope
+      required: true
+  - code: gri305_2016.5.b.gases_included
+    name: Gases included in the calculation
+    description: GRI 305-5-b.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: *id001
+  - code: gri305_2016.5.c.baseline
+    name: Base year or baseline and rationale
+    description: GRI 305-5-c.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.5.d.scopes
+    name: Scopes in which reductions took place
+    description: GRI 305-5-d.
+    data_type: multi_choice
+    requirement: required
+    validation:
+      choices: *id003
+  - code: gri305_2016.5.e.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-5-e.
+    data_type: text
+    requirement: required
+- code: 305-6
+  title: Emissions of ozone-depleting substances (ODS)
+  metrics:
+  - code: gri305_2016.6.a.ods
+    name: Production, imports and exports of ODS
+    description: GRI 305-6-a.
+    data_type: decimal
+    unit: t CFC11e
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: ods_flow
+      required: true
+  - code: gri305_2016.6.b.substances
+    name: Substances included in the calculation
+    description: GRI 305-6-b.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.6.c.factor_sources
+    name: Source of the emission factors used
+    description: GRI 305-6-c.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.6.d.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-6-d.
+    data_type: text
+    requirement: required
+- code: 305-7
+  title: Nitrogen oxides (NOx), sulfur oxides (SOx), and other significant air emissions
+  metrics:
+  - code: gri305_2016.7.a.air_emissions
+    name: Significant air emissions
+    description: GRI 305-7-a.
+    data_type: decimal
+    unit: kg
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: air_pollutant
+      required: true
+  - code: gri305_2016.7.b.factor_sources
+    name: Source of the emission factors used
+    description: GRI 305-7-b.
+    data_type: text
+    requirement: required
+  - code: gri305_2016.7.c.methodology
+    name: Standards, methodologies, assumptions and tools used
+    description: GRI 305-7-c.
+    data_type: text
+    requirement: required

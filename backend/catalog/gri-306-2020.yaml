@@ -1,0 +1,121 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 306
+  title: Waste
+  version: '2020'
+  effective_date: 2022-01-01
+disclosures:
+- code: 306-1
+  title: Waste generation and significant waste-related impacts
+  metrics:
+  - code: gri306_2020.1.a.significant_impacts
+    name: Significant actual and potential waste-related impacts
+    description: GRI 306-1-a.
+    data_type: text
+    requirement: required
+- code: 306-2
+  title: Management of significant waste-related impacts
+  metrics:
+  - code: gri306_2020.2.a.prevention_actions
+    name: Actions, including circularity measures
+    description: GRI 306-2-a.
+    data_type: text
+    requirement: required
+  - code: gri306_2020.2.b.third_party_oversight
+    name: How third-party waste management is checked
+    description: GRI 306-2-b.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri306_2020.2.c.data_processes
+    name: Processes to collect and monitor waste data
+    description: GRI 306-2-c.
+    data_type: text
+    requirement: required
+- code: 306-3
+  title: Waste generated
+  metrics:
+  - code: gri306_2020.3.a.waste_generated
+    name: Waste generated
+    description: GRI 306-3-a.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: waste_composition
+      required: true
+  - code: gri306_2020.3.b.context
+    name: Contextual information and how the data were compiled
+    description: GRI 306-3-b.
+    data_type: text
+    requirement: required
+- code: 306-4
+  title: Waste diverted from disposal
+  metrics:
+  - code: gri306_2020.4.a.diverted_by_composition
+    name: Waste diverted from disposal by composition
+    description: GRI 306-4-a.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: waste_composition
+      required: true
+  - code: gri306_2020.4.b.diverted_by_operation
+    name: Waste diverted from disposal by hazard, recovery operation and location
+    description: GRI 306-4-b. Covers 306-4-b, 306-4-c and 306-4-d.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: waste_hazard
+      required: true
+    - code: recovery_operation
+      required: true
+    - code: waste_location
+      required: true
+  - code: gri306_2020.4.e.context
+    name: Contextual information and how the data were compiled
+    description: GRI 306-4-e.
+    data_type: text
+    requirement: required
+- code: 306-5
+  title: Waste directed to disposal
+  metrics:
+  - code: gri306_2020.5.a.disposal_by_composition
+    name: Waste directed to disposal by composition
+    description: GRI 306-5-a.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: waste_composition
+      required: true
+  - code: gri306_2020.5.b.disposal_by_operation
+    name: Waste directed to disposal by hazard, disposal operation and location
+    description: GRI 306-5-b. Covers 306-5-b, 306-5-c and 306-5-d.
+    data_type: decimal
+    unit: t
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: waste_hazard
+      required: true
+    - code: disposal_operation
+      required: true
+    - code: waste_location
+      required: true
+  - code: gri306_2020.5.e.context
+    name: Contextual information and how the data were compiled
+    description: GRI 306-5-e.
+    data_type: text
+    requirement: required

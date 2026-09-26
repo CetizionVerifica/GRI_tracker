@@ -1,0 +1,246 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+dimensions:
+- code: gender
+  name: Gender
+  values:
+  - code: female
+    label: Female
+  - code: male
+    label: Male
+  - code: other
+    label: Other
+  - code: not_disclosed
+    label: Not disclosed
+- code: age_group
+  name: Age group
+  values:
+  - code: under_30
+    label: Under 30 years old
+  - code: 30_to_50
+    label: 30-50 years old
+  - code: over_50
+    label: Over 50 years old
+- code: region
+  name: Region
+  values: []
+- code: significant_location
+  name: Significant location of operation
+  values: []
+- code: employee_category
+  name: Employee category
+  values: []
+- code: employee_type
+  name: Employee type
+  values: []
+- code: governance_body
+  name: Governance body
+  values: []
+- code: diversity_group
+  name: Other diversity indicator
+  values: []
+- code: worker_group
+  name: Worker group
+  values:
+  - code: employees
+    label: Employees
+  - code: non_employee_workers
+    label: Workers who are not employees (work or workplace controlled)
+- code: ghg_gas
+  name: Greenhouse gas
+  values:
+  - code: co2
+    label: CO2
+  - code: ch4
+    label: CH4
+  - code: n2o
+    label: N2O
+  - code: hfcs
+    label: HFCs
+  - code: pfcs
+    label: PFCs
+  - code: sf6
+    label: SF6
+  - code: nf3
+    label: NF3
+- code: ghg_scope
+  name: GHG scope
+  values:
+  - code: scope_1
+    label: Scope 1
+  - code: scope_2
+    label: Scope 2
+  - code: scope_3
+    label: Scope 3
+- code: scope3_category
+  name: Scope 3 category
+  values:
+  - code: c01
+    label: 1. Purchased goods and services
+  - code: c02
+    label: 2. Capital goods
+  - code: c03
+    label: 3. Fuel- and energy-related activities
+  - code: c04
+    label: 4. Upstream transportation and distribution
+  - code: c05
+    label: 5. Waste generated in operations
+  - code: c06
+    label: 6. Business travel
+  - code: c07
+    label: 7. Employee commuting
+  - code: c08
+    label: 8. Upstream leased assets
+  - code: c09
+    label: 9. Downstream transportation and distribution
+  - code: c10
+    label: 10. Processing of sold products
+  - code: c11
+    label: 11. Use of sold products
+  - code: c12
+    label: 12. End-of-life treatment of sold products
+  - code: c13
+    label: 13. Downstream leased assets
+  - code: c14
+    label: 14. Franchises
+  - code: c15
+    label: 15. Investments
+- code: energy_source
+  name: Energy source or fuel type
+  values: []
+- code: energy_renewability
+  name: Renewable or non-renewable
+  values:
+  - code: renewable
+    label: Renewable
+  - code: non_renewable
+    label: Non-renewable
+- code: energy_carrier
+  name: Energy carrier
+  values:
+  - code: electricity
+    label: Electricity
+  - code: heating
+    label: Heating
+  - code: cooling
+    label: Cooling
+  - code: steam
+    label: Steam
+- code: activity
+  name: Activity
+  values: []
+- code: water_source
+  name: Water source
+  values:
+  - code: surface_water
+    label: Surface water
+  - code: groundwater
+    label: Groundwater
+  - code: seawater
+    label: Seawater
+  - code: produced_water
+    label: Produced water
+  - code: third_party_water
+    label: Third-party water
+- code: original_water_source
+  name: Original source of third-party water
+  values:
+  - code: surface_water
+    label: Surface water
+  - code: groundwater
+    label: Groundwater
+  - code: seawater
+    label: Seawater
+  - code: produced_water
+    label: Produced water
+- code: water_destination
+  name: Water discharge destination
+  values:
+  - code: surface_water
+    label: Surface water
+  - code: groundwater
+    label: Groundwater
+  - code: seawater
+    label: Seawater
+  - code: third_party_water
+    label: Third-party water
+- code: water_quality
+  name: Water quality
+  values:
+  - code: freshwater
+    label: Freshwater (<=1,000 mg/L total dissolved solids)
+  - code: other_water
+    label: Other water (>1,000 mg/L total dissolved solids)
+- code: waste_composition
+  name: Waste composition
+  values: []
+- code: waste_hazard
+  name: Hazardous or non-hazardous
+  values:
+  - code: hazardous
+    label: Hazardous
+  - code: non_hazardous
+    label: Non-hazardous
+- code: recovery_operation
+  name: Recovery operation
+  values:
+  - code: preparation_for_reuse
+    label: Preparation for reuse
+  - code: recycling
+    label: Recycling
+  - code: other_recovery
+    label: Other recovery operations
+- code: disposal_operation
+  name: Disposal operation
+  values:
+  - code: incineration_with_energy_recovery
+    label: Incineration (with energy recovery)
+  - code: incineration_without_energy_recovery
+    label: Incineration (without energy recovery)
+  - code: landfilling
+    label: Landfilling
+  - code: other_disposal
+    label: Other disposal operations
+- code: waste_location
+  name: Onsite or offsite
+  values:
+  - code: onsite
+    label: Onsite
+  - code: offsite
+    label: Offsite
+- code: air_pollutant
+  name: Air emission category
+  values:
+  - code: nox
+    label: NOx
+  - code: sox
+    label: SOx
+  - code: pop
+    label: Persistent organic pollutants (POP)
+  - code: voc
+    label: Volatile organic compounds (VOC)
+  - code: hap
+    label: Hazardous air pollutants (HAP)
+  - code: pm
+    label: Particulate matter (PM)
+  - code: other
+    label: Other standard categories identified in relevant regulations
+- code: ods_flow
+  name: ODS flow
+  values:
+  - code: production
+    label: Production
+  - code: imports
+    label: Imports
+  - code: exports
+    label: Exports
+- code: storage_pool
+  name: GHG storage pool
+  values: []
+- code: carbon_credit_project_type
+  name: Carbon credit project type
+  values:
+  - code: removal
+    label: Removal project
+  - code: reduction
+    label: Reduction project

@@ -1,0 +1,708 @@
+# GRI catalog content, reviewed and approved on 2026-09-26.
+# Drafted from the requirement sections of the GRI Standards PDFs; names paraphrase GRI.
+standard:
+  code: GRI 2
+  title: General Disclosures
+  version: '2021'
+  effective_date: 2023-01-01
+disclosures:
+- code: 2-1
+  title: Organizational details
+  metrics:
+  - code: gri2_2021.1.a.legal_name
+    name: Legal name
+    description: GRI 2-1-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.1.b.ownership_legal_form
+    name: Nature of ownership and legal form
+    description: GRI 2-1-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.1.c.headquarters_location
+    name: Location of headquarters
+    description: GRI 2-1-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.1.d.countries_of_operation
+    name: Countries of operation
+    description: GRI 2-1-d.
+    data_type: text
+    requirement: required
+- code: 2-2
+  title: Entities included in the organization’s sustainability reporting
+  metrics:
+  - code: gri2_2021.2.a.entities_included
+    name: Entities included in sustainability reporting
+    description: GRI 2-2-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.2.b.differences_from_financial_reporting
+    name: Differences between entities in financial and sustainability reporting
+    description: GRI 2-2-b.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri2_2021.2.c.consolidation_approach
+    name: Approach used for consolidating information
+    description: GRI 2-2-c.
+    data_type: text
+    requirement: required_if_applicable
+- code: 2-3
+  title: Reporting period, frequency and contact point
+  metrics:
+  - code: gri2_2021.3.a.reporting_period_frequency
+    name: Sustainability reporting period and frequency
+    description: GRI 2-3-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.3.b.financial_reporting_period
+    name: Financial reporting period and any misalignment
+    description: GRI 2-3-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.3.c.publication_date
+    name: Publication date of the report
+    description: GRI 2-3-c.
+    data_type: date
+    requirement: required
+  - code: gri2_2021.3.d.contact_point
+    name: Contact point for questions about the report
+    description: GRI 2-3-d.
+    data_type: text
+    requirement: required
+- code: 2-4
+  title: Restatements of information
+  metrics:
+  - code: gri2_2021.4.a.restatements
+    name: Restatements, with reasons and effect
+    description: GRI 2-4-a.
+    data_type: text
+    requirement: required
+- code: 2-5
+  title: External assurance
+  metrics:
+  - code: gri2_2021.5.a.assurance_policy
+    name: Policy and practice for seeking external assurance
+    description: GRI 2-5-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.5.b.assurance_details
+    name: Assurance report link, scope, basis and provider relationship
+    description: GRI 2-5-b.
+    data_type: text
+    requirement: required_if_applicable
+- code: 2-6
+  title: Activities, value chain and other business relationships
+  metrics:
+  - code: gri2_2021.6.a.sectors
+    name: Sectors in which the organization is active
+    description: GRI 2-6-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.6.b.value_chain
+    name: Value chain description
+    description: GRI 2-6-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.6.c.other_business_relationships
+    name: Other relevant business relationships
+    description: GRI 2-6-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.6.d.significant_changes
+    name: Significant changes compared to the previous period
+    description: GRI 2-6-d.
+    data_type: text
+    requirement: required
+- code: 2-7
+  title: Employees
+  metrics:
+  - code: gri2_2021.7.a.employees
+    name: Employees
+    description: GRI 2-7-a. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.b.i.permanent_employees
+    name: Permanent employees
+    description: GRI 2-7-b-i. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.b.ii.temporary_employees
+    name: Temporary employees
+    description: GRI 2-7-b-ii. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.b.iii.non_guaranteed_hours_employees
+    name: Non-guaranteed hours employees
+    description: GRI 2-7-b-iii. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.b.iv.full_time_employees
+    name: Full-time employees
+    description: GRI 2-7-b-iv. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.b.v.part_time_employees
+    name: Part-time employees
+    description: GRI 2-7-b-v. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+    dimensions:
+    - code: gender
+      required: true
+    - code: region
+      required: true
+  - code: gri2_2021.7.c.i.counting_unit
+    name: Reported in head count, FTE or another methodology
+    description: GRI 2-7-c-i.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - head_count
+      - fte
+      - other
+  - code: gri2_2021.7.c.ii.counting_point
+    name: Reported at period end, as an average, or otherwise
+    description: GRI 2-7-c-ii.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - end_of_period
+      - average
+      - other
+  - code: gri2_2021.7.c.methodology
+    name: Methodologies and assumptions used
+    description: GRI 2-7-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.7.d.context
+    name: Contextual information for 2-7-a and 2-7-b
+    description: GRI 2-7-d.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.7.e.fluctuations
+    name: Significant fluctuations in the number of employees
+    description: GRI 2-7-e.
+    data_type: text
+    requirement: required
+- code: 2-8
+  title: Workers who are not employees
+  metrics:
+  - code: gri2_2021.8.a.non_employee_workers
+    name: Workers who are not employees (work controlled)
+    description: GRI 2-8-a. Decimal so FTE-based figures are possible.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.8.a.i.worker_types
+    name: Most common worker types, contractual relationship, and work
+    description: GRI 2-8-a-i.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.8.b.i.counting_unit
+    name: Reported in head count, FTE or another methodology
+    description: GRI 2-8-b-i.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - head_count
+      - fte
+      - other
+  - code: gri2_2021.8.b.ii.counting_point
+    name: Reported at period end, as an average, or otherwise
+    description: GRI 2-8-b-ii.
+    data_type: choice
+    requirement: required
+    validation:
+      choices:
+      - end_of_period
+      - average
+      - other
+  - code: gri2_2021.8.b.methodology
+    name: Methodologies and assumptions used
+    description: GRI 2-8-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.8.c.fluctuations
+    name: Significant fluctuations in the number of such workers
+    description: GRI 2-8-c.
+    data_type: text
+    requirement: required
+- code: 2-9
+  title: Governance structure and composition
+  metrics:
+  - code: gri2_2021.9.a.governance_structure
+    name: Governance structure, including committees
+    description: GRI 2-9-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.9.b.impact_committees
+    name: Committees responsible for managing impacts
+    description: GRI 2-9-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.9.c.composition
+    name: Composition of the highest governance body and its committees
+    description: GRI 2-9-c.
+    data_type: text
+    requirement: required
+- code: 2-10
+  title: Nomination and selection of the highest governance body
+  metrics:
+  - code: gri2_2021.10.a.nomination_process
+    name: Nomination and selection processes
+    description: GRI 2-10-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.10.b.nomination_criteria
+    name: Criteria used for nominating and selecting members
+    description: GRI 2-10-b.
+    data_type: text
+    requirement: required
+- code: 2-11
+  title: Chair of the highest governance body
+  metrics:
+  - code: gri2_2021.11.a.chair_is_senior_executive
+    name: Chair is also a senior executive
+    description: GRI 2-11-a.
+    data_type: boolean
+    requirement: required
+  - code: gri2_2021.11.b.chair_arrangement
+    name: Chair's function, reasons, and conflict-of-interest handling
+    description: GRI 2-11-b.
+    data_type: text
+    requirement: required_if_applicable
+- code: 2-12
+  title: Role of the highest governance body in overseeing the management of impacts
+  metrics:
+  - code: gri2_2021.12.a.role_in_strategy
+    name: Role in purpose, strategies, policies and goals
+    description: GRI 2-12-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.12.b.role_in_due_diligence
+    name: Role in overseeing due diligence and impact management
+    description: GRI 2-12-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.12.c.effectiveness_review
+    name: Role in reviewing effectiveness, and review frequency
+    description: GRI 2-12-c.
+    data_type: text
+    requirement: required
+- code: 2-13
+  title: Delegation of responsibility for managing impacts
+  metrics:
+  - code: gri2_2021.13.a.delegation
+    name: How responsibility for managing impacts is delegated
+    description: GRI 2-13-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.13.b.reporting_back
+    name: Process and frequency of reporting back to the body
+    description: GRI 2-13-b.
+    data_type: text
+    requirement: required
+- code: 2-14
+  title: Role of the highest governance body in sustainability reporting
+  metrics:
+  - code: gri2_2021.14.a.reviews_reported_information
+    name: Highest governance body reviews and approves reported information
+    description: GRI 2-14-a.
+    data_type: boolean
+    requirement: required
+  - code: gri2_2021.14.a.review_process
+    name: Process for reviewing and approving the information
+    description: GRI 2-14-a.
+    data_type: text
+    requirement: required_if_applicable
+  - code: gri2_2021.14.b.reason_not_responsible
+    name: Reason the body is not responsible
+    description: GRI 2-14-b.
+    data_type: text
+    requirement: required_if_applicable
+- code: 2-15
+  title: Conflicts of interest
+  metrics:
+  - code: gri2_2021.15.a.prevention_processes
+    name: Processes to prevent and mitigate conflicts of interest
+    description: GRI 2-15-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.15.b.disclosure_to_stakeholders
+    name: Whether conflicts of interest are disclosed to stakeholders
+    description: GRI 2-15-b.
+    data_type: text
+    requirement: required
+- code: 2-16
+  title: Communication of critical concerns
+  metrics:
+  - code: gri2_2021.16.a.communication_process
+    name: Whether and how critical concerns are communicated
+    description: GRI 2-16-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.16.b.critical_concerns
+    name: Critical concerns communicated to the body
+    description: GRI 2-16-b.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.16.b.critical_concerns_nature
+    name: Nature of the critical concerns communicated
+    description: GRI 2-16-b.
+    data_type: text
+    requirement: required
+- code: 2-17
+  title: Collective knowledge of the highest governance body
+  metrics:
+  - code: gri2_2021.17.a.knowledge_measures
+    name: Measures to advance collective knowledge
+    description: GRI 2-17-a.
+    data_type: text
+    requirement: required
+- code: 2-18
+  title: Evaluation of the performance of the highest governance body
+  metrics:
+  - code: gri2_2021.18.a.evaluation_process
+    name: Processes for evaluating the body's performance
+    description: GRI 2-18-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.18.b.evaluation_independence_frequency
+    name: Independence and frequency of evaluations
+    description: GRI 2-18-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.18.c.evaluation_actions
+    name: Actions taken in response to evaluations
+    description: GRI 2-18-c.
+    data_type: text
+    requirement: required
+- code: 2-19
+  title: Remuneration policies
+  metrics:
+  - code: gri2_2021.19.a.remuneration_policies
+    name: Remuneration policies for the body and senior executives
+    description: GRI 2-19-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.19.b.link_to_impact_management
+    name: How remuneration relates to impact-management objectives and performance
+    description: GRI 2-19-b.
+    data_type: text
+    requirement: required
+- code: 2-20
+  title: Process to determine remuneration
+  metrics:
+  - code: gri2_2021.20.a.remuneration_process
+    name: Process for designing policies and determining pay
+    description: GRI 2-20-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.20.b.stakeholder_votes
+    name: Results of stakeholder votes on remuneration
+    description: GRI 2-20-b.
+    data_type: text
+    requirement: required_if_applicable
+- code: 2-21
+  title: Annual total compensation ratio
+  metrics:
+  - code: gri2_2021.21.a.highest_paid_compensation
+    name: Annual total compensation of the highest-paid individual
+    description: GRI 2-21-a. Input to a calculated metric in this disclosure. Amount in the organization's
+      reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.21.a.median_compensation
+    name: Median annual total compensation of all other employees
+    description: GRI 2-21-a. Input to a calculated metric in this disclosure. Amount in the organization's
+      reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.21.b.highest_paid_increase
+    name: Percentage increase in compensation of the highest-paid individual
+    description: GRI 2-21-b. Input to a calculated metric in this disclosure.
+    data_type: decimal
+    unit: percent
+    requirement: required
+  - code: gri2_2021.21.b.median_increase
+    name: Median percentage increase in compensation of all other employees
+    description: GRI 2-21-b. Input to a calculated metric in this disclosure.
+    data_type: decimal
+    unit: percent
+    requirement: required
+  - code: gri2_2021.21.a.total_compensation_ratio
+    name: Highest-paid individual to median employee annual total compensation
+    description: GRI 2-21-a. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    validation:
+      minimum: '0'
+    calculated: true
+  - code: gri2_2021.21.b.compensation_increase_ratio
+    name: Ratio of percentage increases in annual total compensation
+    description: GRI 2-21-b. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: dimensionless
+    requirement: required
+    calculated: true
+  - code: gri2_2021.21.c.context
+    name: Contextual information and how the data were compiled
+    description: GRI 2-21-c.
+    data_type: text
+    requirement: required
+- code: 2-22
+  title: Statement on sustainable development strategy
+  metrics:
+  - code: gri2_2021.22.a.statement
+    name: Statement on sustainable development strategy
+    description: GRI 2-22-a.
+    data_type: text
+    requirement: required
+- code: 2-23
+  title: Policy commitments
+  metrics:
+  - code: gri2_2021.23.a.responsible_business_commitments
+    name: Policy commitments for responsible conduct
+    description: GRI 2-23-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.23.b.human_rights_commitment
+    name: Specific commitment to respect human rights
+    description: GRI 2-23-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.23.c.links
+    name: Links to the policy commitments, or why not public
+    description: GRI 2-23-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.23.d.approval_level
+    name: Level at which each commitment was approved
+    description: GRI 2-23-d.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.23.e.extent_of_application
+    name: Extent to which commitments apply
+    description: GRI 2-23-e.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.23.f.communication
+    name: How the commitments are communicated
+    description: GRI 2-23-f.
+    data_type: text
+    requirement: required
+- code: 2-24
+  title: Embedding policy commitments
+  metrics:
+  - code: gri2_2021.24.a.embedding
+    name: How each policy commitment is embedded
+    description: GRI 2-24-a.
+    data_type: text
+    requirement: required
+- code: 2-25
+  title: Processes to remediate negative impacts
+  metrics:
+  - code: gri2_2021.25.a.remediation_commitments
+    name: Commitments to provide for or cooperate in remediation
+    description: GRI 2-25-a.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.25.b.grievance_approach
+    name: Approach to identifying and addressing grievances
+    description: GRI 2-25-b.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.25.c.other_remediation_processes
+    name: Other remediation processes
+    description: GRI 2-25-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.25.d.stakeholder_involvement
+    name: How intended users are involved in the mechanisms
+    description: GRI 2-25-d.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.25.e.effectiveness_tracking
+    name: How effectiveness is tracked, with examples
+    description: GRI 2-25-e.
+    data_type: text
+    requirement: required
+- code: 2-26
+  title: Mechanisms for seeking advice and raising concerns
+  metrics:
+  - code: gri2_2021.26.a.mechanisms
+    name: Mechanisms to seek advice and raise concerns
+    description: GRI 2-26-a.
+    data_type: text
+    requirement: required
+- code: 2-27
+  title: Compliance with laws and regulations
+  metrics:
+  - code: gri2_2021.27.a.significant_non_compliance
+    name: Significant instances of non-compliance
+    description: GRI 2-27-a.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.a.i.instances_with_fines
+    name: Instances for which fines were incurred
+    description: GRI 2-27-a-i.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.a.ii.instances_with_non_monetary_sanctions
+    name: Instances for which non-monetary sanctions were incurred
+    description: GRI 2-27-a-ii.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.b.fines_paid_count
+    name: Fines paid during the period
+    description: GRI 2-27-b.
+    data_type: integer
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.b.fines_paid_value
+    name: Monetary value of fines paid
+    description: GRI 2-27-b. Amount in the organization's reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.b.i.fines_paid_current_period
+    name: Fines paid for non-compliance in this period
+    description: GRI 2-27-b-i. Amount in the organization's reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.b.ii.fines_paid_previous_periods
+    name: Fines paid for non-compliance in earlier periods
+    description: GRI 2-27-b-ii. Amount in the organization's reporting currency.
+    data_type: decimal
+    unit: currency_unit
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.27.c.instances_description
+    name: Description of significant instances
+    description: GRI 2-27-c.
+    data_type: text
+    requirement: required
+  - code: gri2_2021.27.d.significance_criteria
+    name: How significant instances were determined
+    description: GRI 2-27-d.
+    data_type: text
+    requirement: required
+- code: 2-28
+  title: Membership associations
+  metrics:
+  - code: gri2_2021.28.a.associations
+    name: Associations and advocacy organizations with a significant role
+    description: GRI 2-28-a.
+    data_type: text
+    requirement: required
+- code: 2-29
+  title: Approach to stakeholder engagement
+  metrics:
+  - code: gri2_2021.29.a.engagement_approach
+    name: Approach to engaging with stakeholders
+    description: GRI 2-29-a.
+    data_type: text
+    requirement: required
+- code: 2-30
+  title: Collective bargaining agreements
+  metrics:
+  - code: gri2_2021.30.a.employees_covered_count
+    name: Employees covered by collective bargaining agreements
+    description: GRI 2-30-a. Input to a calculated metric in this disclosure. Divided by total employees
+      from 2-7-a.
+    data_type: decimal
+    unit: count
+    requirement: required
+    validation:
+      minimum: '0'
+  - code: gri2_2021.30.a.employees_covered
+    name: Employees covered by collective bargaining agreements
+    description: GRI 2-30-a. Calculated by the calculation module; never entered by hand.
+    data_type: decimal
+    unit: percent
+    requirement: required
+    validation:
+      minimum: '0'
+      maximum: '100'
+    calculated: true
+  - code: gri2_2021.30.b.non_covered_terms
+    name: How terms are set for employees not covered
+    description: GRI 2-30-b.
+    data_type: text
+    requirement: required
