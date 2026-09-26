@@ -1,0 +1,1 @@
+"""GRI KPI platform backend."""
