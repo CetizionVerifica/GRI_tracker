@@ -1,7 +1,9 @@
 name: CI
 
 on:
+  # Branches are checked through their PR; push only covers what lands on main.
   push:
+    branches: [main]
   pull_request:
 
 permissions:
