@@ -1,6 +1,10 @@
 # Local development services. Credentials are dev-only defaults; override via environment.
 name: gri-kpi
 
+x-minio-image: &minio-image
+  # Community build of MinIO (upstream stopped publishing images). Pin a release tag.
+  image: pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+
 services:
   postgres:
     image: postgres:16
@@ -13,15 +17,18 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gri}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gri} -d ${POSTGRES_DB:-gri}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   redis:
     image: redis:7
+    command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -29,17 +36,40 @@ services:
       retries: 10
 
   minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
+    <<: *minio-image
+    command: ["minio", "server", "/data", "--console-address", ":9001"]
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-dev-password}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
     volumes:
       - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-off: creates the application bucket once MinIO is healthy, then exits.
+  minio-init:
+    <<: *minio-image
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minio-dev-password}
+      S3_BUCKET: ${S3_BUCKET:-gri-kpi}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"
+        && mc mb --ignore-existing "local/$$S3_BUCKET"
+    restart: "no"
 
 volumes:
   postgres-data:
+  redis-data:
   minio-data:

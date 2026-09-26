@@ -2,6 +2,7 @@
 
 from collections.abc import AsyncIterator
 
+from fastapi import Request
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -44,3 +45,10 @@ async def session_scope(
         except Exception:
             await session.rollback()
             raise
+
+
+async def get_session(request: Request) -> AsyncIterator[AsyncSession]:
+    """FastAPI dependency: one transactional session per request."""
+    factory: async_sessionmaker[AsyncSession] = request.app.state.session_factory
+    async for session in session_scope(factory):
+        yield session

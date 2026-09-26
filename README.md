@@ -37,15 +37,24 @@ backend/
 Requires Docker and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-docker compose up -d            # from the repo root; Postgres is exposed on localhost:55432
+docker compose up -d --wait     # from the repo root; Postgres on :55432, Redis :6379, MinIO :9000
 cd backend
 cp .env.example .env
 uv sync
 uv run alembic upgrade head
-uv run uvicorn app.main:app --reload   # http://localhost:8000/health, docs at /docs
+uv run uvicorn app.main:app --reload   # docs at http://localhost:8000/docs
 ```
 
-Set `POSTGRES_PORT` before `docker compose up` to change the host port (update `DATABASE_URL` to match).
+Set `POSTGRES_PORT`, `REDIS_PORT`, `MINIO_PORT` or `MINIO_CONSOLE_PORT` before `docker compose up` to
+change host ports (update the matching URL in `.env`). The `minio-init` service creates the bucket.
+
+## Health and observability
+
+- `GET /health/live`: liveness; 200 whenever the process is serving. Never checks dependencies.
+- `GET /health/ready`: readiness; checks PostgreSQL, Redis and the S3 bucket, 503 if any fail.
+- Logs are JSON lines on stdout (`LOG_JSON=false` for console output). Every request gets an
+  `X-Request-ID` (an incoming safe value is reused), included in logs and error responses.
+- Errors are RFC 9457 `application/problem+json`.
 
 ## Checks
 
@@ -54,5 +63,5 @@ cd backend
 uv run ruff check . && uv run ruff format --check . && uv run mypy && uv run pytest
 ```
 
-Tests run against a real PostgreSQL started by testcontainers, so Docker must be running.
-Run `uv run pytest -m "not db"` to skip database tests.
+Integration tests run against real PostgreSQL, Redis and MinIO started by testcontainers, so Docker
+must be running. Run `uv run pytest -m "not integration"` to skip them.

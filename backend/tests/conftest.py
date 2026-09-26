@@ -1,15 +1,32 @@
 import os
+import socket
 from collections.abc import AsyncIterator, Iterator
 
 import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
+from pydantic import SecretStr
 from sqlalchemy.ext.asyncio import AsyncEngine
+from testcontainers.community.minio import MinioContainer
 from testcontainers.community.postgres import PostgresContainer
+from testcontainers.community.redis import RedisContainer
 
 from app.core.config import Settings
 from app.core.db import create_engine
 from app.main import create_app
+
+MINIO_IMAGE = (
+    "pgsty/minio:RELEASE.2026-08-04T00-00-00Z"  # keep in sync with infra/docker-compose.yml
+)
+TEST_BUCKET = "gri-kpi-test"
+
+
+def unused_port() -> int:
+    """A local port with nothing listening on it, for simulating an unreachable dependency."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(("127.0.0.1", 0))
+        port: int = sock.getsockname()[1]
+    return port
 
 
 @pytest.fixture(scope="session")
@@ -26,6 +43,26 @@ def postgres_url() -> Iterator[str]:
 
 
 @pytest.fixture(scope="session")
+def redis_url() -> Iterator[str]:
+    with RedisContainer("redis:7") as container:
+        host = container.get_container_host_ip()
+        port = container.get_exposed_port(6379)
+        yield f"redis://{host}:{port}/0"
+
+
+@pytest.fixture(scope="session")
+def minio() -> Iterator[MinioContainer]:
+    """MinIO with the test bucket already created."""
+    container = MinioContainer(MINIO_IMAGE)
+    # Current MinIO releases only read the ROOT_* variables.
+    container.with_env("MINIO_ROOT_USER", container.access_key)
+    container.with_env("MINIO_ROOT_PASSWORD", container.secret_key)
+    with container:
+        container.get_client().make_bucket(TEST_BUCKET)
+        yield container
+
+
+@pytest.fixture(scope="session")
 async def db_engine(postgres_url: str) -> AsyncIterator[AsyncEngine]:
     engine = create_engine(postgres_url)
     yield engine
@@ -34,7 +71,34 @@ async def db_engine(postgres_url: str) -> AsyncIterator[AsyncEngine]:
 
 @pytest.fixture
 def settings() -> Settings:
-    return Settings(app_env="test")
+    """Settings with every dependency unreachable; for tests that don't need real services."""
+    return Settings(
+        _env_file=None,
+        app_env="test",
+        database_url=f"postgresql+psycopg://gri:gri@127.0.0.1:{unused_port()}/gri",
+        redis_url=f"redis://127.0.0.1:{unused_port()}/0",
+        s3_endpoint_url=f"http://127.0.0.1:{unused_port()}",
+        s3_bucket=TEST_BUCKET,
+        health_check_timeout_seconds=2,
+    )
+
+
+@pytest.fixture
+def live_settings(
+    settings: Settings, postgres_url: str, redis_url: str, minio: MinioContainer
+) -> Settings:
+    """Settings pointing at the real PostgreSQL, Redis and MinIO containers."""
+    host = minio.get_container_host_ip()
+    port = minio.get_exposed_port(minio.port)
+    return settings.model_copy(
+        update={
+            "database_url": postgres_url,
+            "redis_url": redis_url,
+            "s3_endpoint_url": f"http://{host}:{port}",
+            "s3_access_key": minio.access_key,
+            "s3_secret_key": SecretStr(minio.secret_key),  # model_copy skips validation
+        }
+    )
 
 
 @pytest.fixture
@@ -42,7 +106,20 @@ def app(settings: Settings) -> FastAPI:
     return create_app(settings)
 
 
+async def make_client(app: FastAPI) -> AsyncIterator[AsyncClient]:
+    """An HTTP client for `app`, with its lifespan (startup/shutdown) running around it."""
+    async with (
+        app.router.lifespan_context(app),
+        AsyncClient(
+            # Unhandled errors become 500 responses, as they would behind uvicorn.
+            transport=ASGITransport(app=app, raise_app_exceptions=False),
+            base_url="http://test",
+        ) as client,
+    ):
+        yield client
+
+
 @pytest.fixture
 async def client(app: FastAPI) -> AsyncIterator[AsyncClient]:
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
+    async for c in make_client(app):
         yield c
