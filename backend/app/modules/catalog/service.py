@@ -183,6 +183,7 @@ async def _seed_standard(session: AsyncSession, seed: SeedStandard, report: Seed
             title=seed.title,
             version=seed.version,
             effective_date=seed.effective_date,
+            effective_until=seed.effective_until,
         )
         repository.add(session, standard)
         await session.flush()
@@ -193,8 +194,8 @@ async def _seed_standard(session: AsyncSession, seed: SeedStandard, report: Seed
             f"standard {seed.code} {seed.version}: effective_date cannot change"
             f" ({standard.effective_date} -> {seed.effective_date}); add a new version instead"
         )
-    if standard.title != seed.title:
-        standard.title = seed.title
+    if (standard.title, standard.effective_until) != (seed.title, seed.effective_until):
+        standard.title, standard.effective_until = seed.title, seed.effective_until
         report.updated["standards"] += 1
     return standard
 
@@ -210,13 +211,23 @@ async def _seed_disclosure(
     disclosure = await repository.get_disclosure_by_code(session, standard.id, seed.code)
     if disclosure is None:
         disclosure = Disclosure(
-            standard_id=standard.id, code=seed.code, title=seed.title, sort_order=position
+            standard_id=standard.id,
+            code=seed.code,
+            title=seed.title,
+            effective_until=seed.effective_until,
+            sort_order=position,
         )
         repository.add(session, disclosure)
         await session.flush()
         report.created["disclosures"] += 1
-    elif (disclosure.title, disclosure.sort_order) != (seed.title, position):
-        disclosure.title, disclosure.sort_order = seed.title, position
+    elif (disclosure.title, disclosure.effective_until, disclosure.sort_order) != (
+        seed.title,
+        seed.effective_until,
+        position,
+    ):
+        disclosure.title = seed.title
+        disclosure.effective_until = seed.effective_until
+        disclosure.sort_order = position
         report.updated["disclosures"] += 1
 
     for metric_position, seed_metric in enumerate(seed.metrics):

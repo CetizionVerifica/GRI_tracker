@@ -11,13 +11,26 @@ from app.modules.catalog.units import unit_registry, validate_unit
 
 @pytest.mark.parametrize(
     "unit",
-    ["t", "MWh", "GJ", "m**3", "kg/m**3", "count", "percent", "t CO2e", "kg CO2e", "t CO2e / MWh"],
+    [
+        "t",
+        "MWh",
+        "GJ",
+        "m**3",
+        "kg/m**3",
+        "count",
+        "percent",
+        "t CO2e",
+        "kg CO2e",
+        "t CO2e / MWh",
+        "tCO2e",
+        "kgCO2e",
+    ],
 )
 def test_known_units(unit: str) -> None:
     assert validate_unit(f" {unit} ") == unit
 
 
-@pytest.mark.parametrize("unit", ["", "   ", "furlongs_per_fortnight", "2 kg", "tCO2e"])
+@pytest.mark.parametrize("unit", ["", "   ", "furlongs_per_fortnight", "2 kg", "MtCO2"])
 def test_unknown_or_malformed_units(unit: str) -> None:
     with pytest.raises(ValueError, match="unit"):
         validate_unit(unit)
@@ -69,6 +82,12 @@ def test_co2e_converts_between_mass_units() -> None:
     quantity = unit_registry().Quantity(Decimal("1500"), "kg CO2e")
 
     assert quantity.to("t CO2e").magnitude == Decimal("1.5")
+
+
+def test_shorthand_co2e_equals_spaced_form() -> None:
+    quantity = unit_registry().Quantity(Decimal("2"), "tCO2e")
+
+    assert quantity.to("kg CO2e").magnitude == Decimal("2000")
 
 
 def test_co2e_cannot_be_added_to_plain_mass() -> None:

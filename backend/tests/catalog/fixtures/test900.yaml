@@ -22,6 +22,7 @@ disclosures:
         validation: {choices: [measured, estimated]}
   - code: 900-2
     title: Test counts
+    effective_until: 2026-12-31
     metrics:
       - code: test900.2.sites
         name: Number of sites

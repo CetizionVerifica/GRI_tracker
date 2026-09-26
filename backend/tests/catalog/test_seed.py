@@ -54,6 +54,30 @@ def test_invalid_files_are_rejected(catalog_dir: Path, content: str, message: st
 
 
 @pytest.mark.parametrize(
+    ("content", "message"),
+    [
+        (
+            "standard: {code: X 1, title: X, version: '1', effective_date: 2020-01-01,"
+            " effective_until: 2019-12-31}",
+            "effective_until is before effective_date",
+        ),
+        (
+            "standard: {code: X 1, title: X, version: '1', effective_date: 2020-01-01}\n"
+            "disclosures: [{code: '1', title: T, effective_until: 2019-01-01}]",
+            "before the standard's effective_date",
+        ),
+    ],
+)
+def test_effective_until_must_not_precede_start(
+    catalog_dir: Path, content: str, message: str
+) -> None:
+    write(catalog_dir, "dates.yaml", content)
+
+    with pytest.raises(CatalogSeedError, match=message):
+        load_catalog(catalog_dir)
+
+
+@pytest.mark.parametrize(
     ("metric", "message"),
     [
         ("{code: m, name: M, data_type: decimal, requirement: required}", "need a unit"),
@@ -172,6 +196,28 @@ async def test_structural_changes_are_refused(
 
     with pytest.raises(CatalogSeedError, match=f"{field}.*cannot change"):
         await run_seed(migrated_postgres_url, catalog_dir)
+
+
+@pytest.mark.usefixtures("catalog")
+async def test_effective_until_can_be_announced_later(
+    catalog_dir: Path, db_engine: AsyncEngine, migrated_postgres_url: str
+) -> None:
+    path = catalog_dir / "test900.yaml"
+    path.write_text(
+        path.read_text().replace(
+            "  effective_date: 2021-01-01\n",
+            "  effective_date: 2021-01-01\n  effective_until: 2027-06-30\n",
+        )
+    )
+
+    report = await run_seed(migrated_postgres_url, catalog_dir)
+
+    assert dict(report.updated) == {"standards": 1}
+    async with db_engine.connect() as conn:
+        until: str = (
+            await conn.execute(text("SELECT effective_until::text FROM standard"))
+        ).scalar_one()
+    assert until == "2027-06-30"
 
 
 @pytest.mark.usefixtures("catalog")

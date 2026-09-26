@@ -63,25 +63,38 @@ def _created_at() -> Mapped[datetime]:
 
 
 class Standard(UUIDPrimaryKey, Base):
-    """A GRI Standard at one version, e.g. GRI 305 (2016). A new version means new rows."""
+    """A GRI Standard at one version, e.g. GRI 305 (2016). A new version means new rows.
+
+    effective_date and effective_until are as GRI states them. GRI ties them to when a report
+    is published, not to the reporting period.
+    """
 
     __tablename__ = "standard"
-    __table_args__ = (UniqueConstraint("code", "version"),)
+    __table_args__ = (
+        UniqueConstraint("code", "version"),
+        CheckConstraint(
+            "effective_until IS NULL OR effective_until >= effective_date", name="dates_ordered"
+        ),
+    )
 
     code: Mapped[str] = mapped_column(Text)
     title: Mapped[str] = mapped_column(Text)
     version: Mapped[str] = mapped_column(Text)
     effective_date: Mapped[date] = mapped_column(Date)
+    effective_until: Mapped[date | None] = mapped_column(Date)  # last day it may be used
     created_at: Mapped[datetime] = _created_at()
 
 
 class Disclosure(UUIDPrimaryKey, Base):
+    """A disclosure. It can stop being in effect before its standard does (effective_until)."""
+
     __tablename__ = "disclosure"
     __table_args__ = (UniqueConstraint("standard_id", "code"),)
 
     standard_id: Mapped[UUID] = mapped_column(ForeignKey("standard.id"))
     code: Mapped[str] = mapped_column(Text)
     title: Mapped[str] = mapped_column(Text)
+    effective_until: Mapped[date | None] = mapped_column(Date)  # last day it may be used
     sort_order: Mapped[int] = mapped_column(Integer, server_default=text("0"))
     created_at: Mapped[datetime] = _created_at()
 

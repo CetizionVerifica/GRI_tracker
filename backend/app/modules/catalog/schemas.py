@@ -129,6 +129,7 @@ class DisclosureOut(Output):
     id: UUID
     code: str
     title: str
+    effective_until: date | None
 
 
 class StandardOut(Output):
@@ -137,6 +138,7 @@ class StandardOut(Output):
     title: str
     version: str
     effective_date: date
+    effective_until: date | None
 
 
 class StandardDetail(StandardOut):
@@ -298,6 +300,7 @@ class SeedMetric(Input):
 class SeedDisclosure(Input):
     code: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=64)]
     title: Name
+    effective_until: date | None = None
     metrics: list[SeedMetric] = Field(default_factory=list)
 
 
@@ -306,6 +309,13 @@ class SeedStandard(Input):
     title: Name
     version: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=32)]
     effective_date: date
+    effective_until: date | None = None
+
+    @model_validator(mode="after")
+    def _dates_ordered(self) -> Self:
+        if self.effective_until is not None and self.effective_until < self.effective_date:
+            raise ValueError(f"{self.code}: effective_until is before effective_date")
+        return self
 
 
 class CatalogFile(Input):
@@ -322,4 +332,12 @@ class CatalogFile(Input):
         codes = [d.code for d in self.disclosures]
         if len(set(codes)) != len(codes):
             raise ValueError("disclosure codes must be unique within a standard")
+        if self.standard is not None:
+            for disclosure in self.disclosures:
+                until = disclosure.effective_until
+                if until is not None and until < self.standard.effective_date:
+                    raise ValueError(
+                        f"disclosure {disclosure.code}: effective_until is before the standard's"
+                        " effective_date"
+                    )
         return self

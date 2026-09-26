@@ -55,7 +55,12 @@ async def test_get_standard_with_disclosures(
         f"/api/v1/catalog/standards/{catalog.standard}", headers=world.auth(world.a_viewer)
     )
 
-    assert [d["code"] for d in response.json()["disclosures"]] == ["900-1", "900-2"]
+    body = response.json()
+    assert body["effective_until"] is None
+    assert [(d["code"], d["effective_until"]) for d in body["disclosures"]] == [
+        ("900-1", None),
+        ("900-2", "2026-12-31"),
+    ]
 
 
 async def test_get_unknown_standard(api: AsyncClient, world: World) -> None:

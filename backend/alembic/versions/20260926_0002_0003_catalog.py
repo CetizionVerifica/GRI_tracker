@@ -87,8 +87,10 @@ def upgrade() -> None:
     sa.Column('title', sa.Text(), nullable=False),
     sa.Column('version', sa.Text(), nullable=False),
     sa.Column('effective_date', sa.Date(), nullable=False),
+    sa.Column('effective_until', sa.Date(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
+    sa.CheckConstraint('effective_until IS NULL OR effective_until >= effective_date', name=op.f('ck_standard_dates_ordered')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_standard')),
     sa.UniqueConstraint('code', 'version', name=op.f('uq_standard_code_version'))
     )
@@ -108,6 +110,7 @@ def upgrade() -> None:
     sa.Column('standard_id', sa.Uuid(), nullable=False),
     sa.Column('code', sa.Text(), nullable=False),
     sa.Column('title', sa.Text(), nullable=False),
+    sa.Column('effective_until', sa.Date(), nullable=True),
     sa.Column('sort_order', sa.Integer(), server_default=sa.text('0'), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),

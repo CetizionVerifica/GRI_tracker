@@ -3,5 +3,8 @@
 
 # Carbon dioxide equivalent. Its own dimension, so emissions combine with mass units
 # ("t CO2e", "kg CO2e", "t CO2e / MWh") but can never be added to plain mass ("t").
-# Write it with a space after the mass unit: "t CO2e", not "tCO2e".
 CO2e = [carbon_dioxide_equivalent] = CO2eq
+
+# Shorthand spellings, the same units as "t CO2e" and "kg CO2e".
+tCO2e = metric_ton * CO2e
+kgCO2e = kilogram * CO2e
