@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app.core.db import RequestContext, bind_request_context, create_session_factory
 from app.core.ids import uuid7
-from tests.tenancy.conftest import Seed, World
+from tests.world import Seed, World
 
 pytestmark = pytest.mark.integration
 

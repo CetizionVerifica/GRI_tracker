@@ -1,6 +1,6 @@
 """Database engine, session factory and the declarative base for all ORM models."""
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Mapping
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Annotated, Any
@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, SessionTransaction, mapped_column
 
+from app.core.errors import ConflictError
 from app.core.ids import uuid7
 
 # Deterministic constraint names so Alembic autogenerate produces stable migrations.
@@ -51,6 +52,20 @@ def violated_constraint(exc: IntegrityError) -> str | None:
     diag = getattr(exc.orig, "diag", None)
     name: str | None = getattr(diag, "constraint_name", None)
     return name
+
+
+async def flush_or_conflict(session: AsyncSession, messages: Mapping[str, str]) -> None:
+    """Flush, turning violations of the named constraints into 409 Conflict with that message.
+
+    Any other integrity error propagates (and becomes a 500): it means a missing check.
+    """
+    try:
+        await session.flush()
+    except IntegrityError as exc:
+        message = messages.get(violated_constraint(exc) or "")
+        if message is None:
+            raise
+        raise ConflictError(message) from exc
 
 
 def create_engine(database_url: str) -> AsyncEngine:

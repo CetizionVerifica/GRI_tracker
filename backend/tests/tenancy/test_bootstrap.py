@@ -6,7 +6,7 @@ from app.core.db import create_session_factory, session_scope
 from app.core.errors import ConflictError
 from app.modules.tenancy import service
 from app.modules.tenancy.schemas import UserCreate
-from tests.tenancy.conftest import Seed
+from tests.world import Seed
 
 pytestmark = pytest.mark.integration
 

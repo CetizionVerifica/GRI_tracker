@@ -13,7 +13,6 @@ from uuid import UUID
 import structlog
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import (
@@ -26,7 +25,7 @@ from app.core.auth import (
     verify_password,
 )
 from app.core.config import Settings
-from app.core.db import DbSession, RequestContext, bind_request_context, violated_constraint
+from app.core.db import DbSession, RequestContext, bind_request_context, flush_or_conflict
 from app.core.errors import (
     ConflictError,
     NotFoundError,
@@ -39,13 +38,13 @@ from app.modules.tenancy.models import (
     Entity,
     Organization,
     OrganizationStatus,
-    OrgRole,
     PeriodStatus,
     PlatformRole,
     PlatformRoleAssignment,
     ReportingPeriod,
     RoleAssignment,
 )
+from app.modules.tenancy.models import OrgRole as OrgRole  # re-exported for other modules
 from app.modules.tenancy.schemas import (
     EntityCreate,
     EntityUpdate,
@@ -76,14 +75,7 @@ _CONSTRAINT_MESSAGES = {
 
 
 async def _flush(session: AsyncSession) -> None:
-    """Flush, turning known constraint violations into 409 Conflict."""
-    try:
-        await session.flush()
-    except IntegrityError as exc:
-        message = _CONSTRAINT_MESSAGES.get(violated_constraint(exc) or "")
-        if message is None:
-            raise
-        raise ConflictError(message) from exc
+    await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
 
 
 def _require_role(access: OrgAccess, *roles: OrgRole) -> None:

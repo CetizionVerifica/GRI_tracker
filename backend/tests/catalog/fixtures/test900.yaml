@@ -1,0 +1,30 @@
+# Fictional standard for tests only. Not GRI content.
+standard:
+  code: TEST 900
+  title: Test emissions
+  version: "2020"
+  effective_date: 2021-01-01
+disclosures:
+  - code: 900-1
+    title: Direct test emissions
+    metrics:
+      - code: test900.1.gross
+        name: Gross direct test emissions
+        data_type: decimal
+        unit: t
+        requirement: required
+        validation: {minimum: "0", maximum: "1000000.5"}
+        dimensions: [{code: test_gas, required: true}]
+      - code: test900.1.method
+        name: Method used
+        data_type: choice
+        requirement: optional
+        validation: {choices: [measured, estimated]}
+  - code: 900-2
+    title: Test counts
+    metrics:
+      - code: test900.2.sites
+        name: Number of sites
+        data_type: integer
+        unit: count
+        requirement: required_if_applicable

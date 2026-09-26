@@ -1,4 +1,4 @@
-"""Tenancy test world: two organizations and users with different roles, seeded as the owner."""
+"""Shared test world: two organizations and users with different roles, seeded as the owner."""
 
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field

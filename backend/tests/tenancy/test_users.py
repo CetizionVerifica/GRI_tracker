@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-from tests.tenancy.conftest import World
+from tests.world import World
 
 pytestmark = pytest.mark.integration
 
