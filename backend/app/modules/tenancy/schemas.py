@@ -6,7 +6,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
-from app.modules.tenancy.models import EntityKind, OrganizationStatus, OrgRole, PeriodStatus
+from app.core.auth import OrgRole
+from app.modules.tenancy.models import EntityKind, OrganizationStatus, PeriodStatus
 
 Name = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
 Code = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=64)]

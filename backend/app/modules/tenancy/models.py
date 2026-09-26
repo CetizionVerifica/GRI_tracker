@@ -24,20 +24,13 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import ExcludeConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.core.auth import OrgRole
 from app.core.db import Base, Timestamps, UUIDPrimaryKey
 
 
 class OrganizationStatus(StrEnum):
     ACTIVE = "active"
     SUSPENDED = "suspended"
-
-
-class OrgRole(StrEnum):
-    ORG_ADMIN = "org_admin"
-    CONTRIBUTOR = "contributor"
-    APPROVER = "approver"
-    VIEWER = "viewer"
-    AUDITOR = "auditor"
 
 
 class PlatformRole(StrEnum):

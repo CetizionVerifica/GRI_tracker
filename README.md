@@ -86,6 +86,20 @@ and add a new code. Organizations can add their own metrics, dimensions and dime
 (codes start with `custom.`); they never see each other's. Extra pint unit definitions go in
 `backend/catalog/units.txt`.
 
+## Audit log
+
+Every change made through the API is recorded in `audit_log`, in the same transaction as the
+change. Each organization has its own hash chain, and platform events (new organizations, users,
+logins, catalog seeds) form one more. The database assigns each entry's sequence number,
+timestamp and SHA-256 hash, and rejects UPDATE, DELETE and TRUNCATE, even for the owner.
+Personal data (email, phone, display name) is recorded by field name only, never by value.
+
+- `GET /api/v1/organizations/{id}/audit-log` and `.../audit-log/verify`: org admins, auditors and
+  platform admins.
+- `GET /api/v1/audit-log` and `/api/v1/audit-log/verify`: the platform chain, platform admins only.
+
+Verification recomputes the chain and reports the first entry that doesn't match.
+
 ## Health and observability
 
 - `GET /health/live`: liveness; 200 whenever the process is serving. Never checks dependencies.

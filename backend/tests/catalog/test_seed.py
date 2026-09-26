@@ -250,3 +250,21 @@ async def test_failed_seed_changes_nothing(
             await conn.execute(text("SELECT title FROM disclosure WHERE code = '900-2'"))
         ).scalar_one()
     assert title == "Test counts"
+
+
+async def audit_actions(engine: AsyncEngine) -> list[tuple[str, str]]:
+    async with engine.connect() as conn:
+        rows = await conn.execute(
+            text("SELECT action, actor_type FROM audit_log WHERE organization_id IS NULL")
+        )
+        return [(r.action, r.actor_type) for r in rows]
+
+
+@pytest.mark.usefixtures("seed")
+async def test_seed_runs_that_change_something_are_audited(
+    db_engine: AsyncEngine, migrated_postgres_url: str
+) -> None:
+    await run_seed(migrated_postgres_url)
+    await run_seed(migrated_postgres_url)  # no changes: nothing to record
+
+    assert await audit_actions(db_engine) == [("catalog.seeded", "system")]

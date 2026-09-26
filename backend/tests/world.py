@@ -19,6 +19,20 @@ from app.main import create_app
 from tests.conftest import make_client
 
 PASSWORD = "correct horse battery staple"
+
+
+async def truncate(engine: AsyncEngine, tables: str) -> None:
+    """Empty tables between tests, including the append-only audit log.
+
+    Only the owner can do this, by switching off the audit log's TRUNCATE guard for the length of
+    one transaction. The application role can't.
+    """
+    async with engine.begin() as conn:
+        await conn.execute(text("ALTER TABLE audit_log DISABLE TRIGGER audit_log_no_truncate"))
+        await conn.execute(text(f"TRUNCATE audit_log, {tables} CASCADE"))
+        await conn.execute(text("ALTER TABLE audit_log ENABLE TRIGGER audit_log_no_truncate"))
+
+
 TENANCY_TABLES = (
     "role_assignment, platform_role_assignment, auth_session, password_credential,"
     " reporting_period, entity, app_user, organization"
@@ -192,8 +206,7 @@ class World:
 @pytest.fixture
 async def seed(migrated_postgres_url: str, db_engine: AsyncEngine) -> AsyncIterator[Seed]:
     yield Seed(db_engine)
-    async with db_engine.begin() as conn:
-        await conn.execute(text(f"TRUNCATE {TENANCY_TABLES} CASCADE"))
+    await truncate(db_engine, TENANCY_TABLES)
 
 
 @pytest.fixture

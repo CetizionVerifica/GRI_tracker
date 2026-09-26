@@ -7,10 +7,9 @@ backstop, so a missed check fails closed instead of leaking data.
 
 import asyncio
 from datetime import UTC, datetime, timedelta
-from typing import Annotated
+from typing import Annotated, Any
 from uuid import UUID
 
-import structlog
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.auth import (
     Identity,
     OrgAccess,
+    OrgRole,
     hash_password,
     new_session_token,
     password_needs_rehash,
@@ -32,6 +32,7 @@ from app.core.errors import (
     PermissionDeniedError,
     UnauthenticatedError,
 )
+from app.modules.audit import service as audit
 from app.modules.tenancy import repository
 from app.modules.tenancy.models import (
     AppUser,
@@ -44,7 +45,6 @@ from app.modules.tenancy.models import (
     ReportingPeriod,
     RoleAssignment,
 )
-from app.modules.tenancy.models import OrgRole as OrgRole  # re-exported for other modules
 from app.modules.tenancy.schemas import (
     EntityCreate,
     EntityUpdate,
@@ -60,9 +60,22 @@ from app.modules.tenancy.schemas import (
     UserCreate,
 )
 
-logger = structlog.stdlib.get_logger(__name__)
-
 _INVALID_LOGIN = "Invalid email or password."
+# Fields recorded in the audit log. Personal data (email, phone, display name) is never recorded
+# by value: user changes log only the names of the fields that changed.
+_ORG_FIELDS = ("name", "slug", "status")
+_ENTITY_FIELDS = ("parent_id", "code", "name", "kind", "archived_at")
+_PERIOD_FIELDS = (
+    "name",
+    "start_date",
+    "end_date",
+    "status",
+    "locked_at",
+    "locked_by",
+    "published_at",
+    "published_by",
+)
+_USER_PERSONAL_FIELDS = ("email", "display_name", "phone")
 _CONSTRAINT_MESSAGES = {
     "uq_organization_slug": "An organization with this slug already exists.",
     "uq_app_user_email_lower": "A user with this email already exists.",
@@ -86,6 +99,48 @@ def _require_role(access: OrgAccess, *roles: OrgRole) -> None:
 def _require_platform_admin(is_platform_admin: bool) -> None:
     if not is_platform_admin:
         raise PermissionDeniedError("Only a platform admin can do this.")
+
+
+async def _record_update(
+    session: AsyncSession,
+    access: OrgAccess,
+    table: str,
+    target_id: UUID,
+    before: dict[str, object],
+    obj: object,
+    fields: tuple[str, ...],
+    action: str | None = None,
+    reason: str | None = None,
+) -> None:
+    """Record the fields that changed on `obj` (nothing, if none did)."""
+    changed_before, changed_after = audit.diff(before, audit.snapshot(obj, fields))
+    if not changed_after:
+        return
+    await audit.record(
+        session,
+        organization_id=access.organization_id,
+        actor_user_id=access.user_id,
+        action=action or f"{table}.updated",
+        target_table=table,
+        target_id=target_id,
+        before=changed_before,
+        after=changed_after,
+        reason=reason,
+    )
+
+
+async def _record_created(
+    session: AsyncSession, access: OrgAccess, table: str, obj: Any, fields: tuple[str, ...]
+) -> None:
+    await audit.record(
+        session,
+        organization_id=access.organization_id,
+        actor_user_id=access.user_id,
+        action=f"{table}.created",
+        target_table=table,
+        target_id=obj.id,
+        after=audit.snapshot(obj, fields),
+    )
 
 
 # --- dependencies
@@ -161,6 +216,14 @@ async def login(
     expires_at = datetime.now(UTC) + timedelta(minutes=settings.session_ttl_minutes)
     repository.add_auth_session(session, record.user_id, digest, expires_at)
     await session.flush()
+    await audit.record(
+        session,
+        organization_id=None,
+        actor_user_id=record.user_id,
+        action="auth.login",
+        target_table="app_user",
+        target_id=record.user_id,
+    )
     return LoginResponse(access_token=token, expires_at=expires_at)
 
 
@@ -169,6 +232,14 @@ async def logout(session: AsyncSession, identity: Identity, token: str) -> None:
     if auth_session is not None and auth_session.revoked_at is None:
         auth_session.revoked_at = datetime.now(UTC)
         await session.flush()
+        await audit.record(
+            session,
+            organization_id=None,
+            actor_user_id=identity.user_id,
+            action="auth.logout",
+            target_table="app_user",
+            target_id=identity.user_id,
+        )
 
 
 async def me(session: AsyncSession, identity: Identity) -> Me:
@@ -206,12 +277,22 @@ async def change_password(
         raise PermissionDeniedError("The current password is incorrect.")
     new_hash = await asyncio.to_thread(hash_password, new_password)
     await repository.set_password(session, identity.user_id, new_hash)
+    await audit.record(
+        session,
+        organization_id=None,
+        actor_user_id=identity.user_id,
+        action="auth.password_changed",
+        target_table="app_user",
+        target_id=identity.user_id,
+    )
 
 
 # --- users
 
 
-async def _create_user(session: AsyncSession, data: UserCreate) -> AppUser:
+async def _create_user(
+    session: AsyncSession, data: UserCreate, actor_user_id: UUID | None
+) -> AppUser:
     if await repository.email_taken(session, data.email):
         raise ConflictError(_CONSTRAINT_MESSAGES["uq_app_user_email_lower"])
     user = AppUser(email=data.email, display_name=data.display_name, phone=data.phone)
@@ -220,22 +301,40 @@ async def _create_user(session: AsyncSession, data: UserCreate) -> AppUser:
     password_hash = await asyncio.to_thread(hash_password, data.password)
     await repository.set_password(session, user.id, password_hash)
     await session.refresh(user)
+    set_fields = {name: getattr(user, name) for name in _USER_PERSONAL_FIELDS}
+    await audit.record(
+        session,
+        organization_id=None,
+        actor_user_id=actor_user_id,
+        action="user.created",
+        target_table="app_user",
+        target_id=user.id,
+        after={"is_active": user.is_active, **audit.changed_fields({}, set_fields)},
+    )
     return user
 
 
 async def create_user(session: AsyncSession, identity: Identity, data: UserCreate) -> AppUser:
     _require_platform_admin(identity.is_platform_admin)
-    return await _create_user(session, data)
+    return await _create_user(session, data, identity.user_id)
 
 
 async def bootstrap_platform_admin(session: AsyncSession, data: UserCreate) -> AppUser:
     """Create the first platform admin. Operator-only: called from the bootstrap CLI."""
     await bind_request_context(session, RequestContext(None, None, is_platform_admin=True))
-    user = await _create_user(session, data)
-    repository.add_platform_role(
-        session, PlatformRoleAssignment(user_id=user.id, role=PlatformRole.PLATFORM_ADMIN)
-    )
+    user = await _create_user(session, data, actor_user_id=None)
+    grant = PlatformRoleAssignment(user_id=user.id, role=PlatformRole.PLATFORM_ADMIN)
+    repository.add_platform_role(session, grant)
     await session.flush()
+    await audit.record(
+        session,
+        organization_id=None,
+        actor_user_id=None,
+        action="platform_role.granted",
+        target_table="platform_role_assignment",
+        target_id=grant.id,
+        after={"user_id": user.id, "role": grant.role},
+    )
     return user
 
 
@@ -250,6 +349,15 @@ async def create_organization(
     repository.add_organization(session, organization)
     await _flush(session)
     await session.refresh(organization)
+    await audit.record(
+        session,
+        organization_id=None,  # the organization's own chain starts with its first change
+        actor_user_id=identity.user_id,
+        action="organization.created",
+        target_table="organization",
+        target_id=organization.id,
+        after=audit.snapshot(organization, _ORG_FIELDS),
+    )
     return organization
 
 
@@ -271,12 +379,16 @@ async def update_organization(
 ) -> Organization:
     _require_platform_admin(access.is_platform_admin)
     organization = await get_organization(session, access)
+    before = audit.snapshot(organization, _ORG_FIELDS)
     if data.name is not None:
         organization.name = data.name
     if data.status is not None:
         organization.status = data.status
     await _flush(session)
     await session.refresh(organization)
+    await _record_update(
+        session, access, "organization", organization.id, before, organization, _ORG_FIELDS
+    )
     return organization
 
 
@@ -315,6 +427,7 @@ async def create_entity(session: AsyncSession, access: OrgAccess, data: EntityCr
     repository.add_entity(session, entity)
     await _flush(session)
     await session.refresh(entity)
+    await _record_created(session, access, "entity", entity, _ENTITY_FIELDS)
     return entity
 
 
@@ -335,6 +448,7 @@ async def update_entity(
 ) -> Entity:
     _require_role(access, OrgRole.ORG_ADMIN)
     entity = await _get_entity(session, access, entity_id)
+    before = audit.snapshot(entity, _ENTITY_FIELDS)
     sent = data.model_fields_set
 
     if data.code is not None:
@@ -358,6 +472,7 @@ async def update_entity(
 
     await _flush(session)
     await session.refresh(entity)
+    await _record_update(session, access, "entity", entity.id, before, entity, _ENTITY_FIELDS)
     return entity
 
 
@@ -389,6 +504,7 @@ async def create_period(
     repository.add_period(session, period)
     await _flush(session)
     await session.refresh(period)
+    await _record_created(session, access, "reporting_period", period, _PERIOD_FIELDS)
     return period
 
 
@@ -406,6 +522,7 @@ async def update_period(
     _require_role(access, OrgRole.ORG_ADMIN)
     period = await _get_period(session, access, period_id)
     _require_status(period, PeriodStatus.OPEN, "edited")
+    before = audit.snapshot(period, _PERIOD_FIELDS)
     if data.name is not None:
         period.name = data.name
     if data.start_date is not None:
@@ -416,6 +533,9 @@ async def update_period(
         raise ConflictError("end_date must be on or after start_date.")
     await _flush(session)
     await session.refresh(period)
+    await _record_update(
+        session, access, "reporting_period", period.id, before, period, _PERIOD_FIELDS
+    )
     return period
 
 
@@ -423,11 +543,22 @@ async def lock_period(session: AsyncSession, access: OrgAccess, period_id: UUID)
     _require_role(access, OrgRole.ORG_ADMIN)
     period = await _get_period(session, access, period_id)
     _require_status(period, PeriodStatus.OPEN, "locked")
+    before = audit.snapshot(period, _PERIOD_FIELDS)
     period.status = PeriodStatus.LOCKED
     period.locked_at = datetime.now(UTC)
     period.locked_by = access.user_id
     await _flush(session)
     await session.refresh(period)
+    await _record_update(
+        session,
+        access,
+        "reporting_period",
+        period.id,
+        before,
+        period,
+        _PERIOD_FIELDS,
+        action="reporting_period.locked",
+    )
     return period
 
 
@@ -438,17 +569,21 @@ async def unlock_period(
     _require_role(access, OrgRole.ORG_ADMIN)
     period = await _get_period(session, access, period_id)
     _require_status(period, PeriodStatus.LOCKED, "unlocked")
+    before = audit.snapshot(period, _PERIOD_FIELDS)
     period.status = PeriodStatus.OPEN
     period.locked_at = None
     period.locked_by = None
     await _flush(session)
     await session.refresh(period)
-    # Persisted to the audit log once the audit module lands (build order: audit is next).
-    logger.info(
-        "reporting_period_unlocked",
-        organization_id=str(access.organization_id),
-        period_id=str(period.id),
-        user_id=str(access.user_id),
+    await _record_update(
+        session,
+        access,
+        "reporting_period",
+        period.id,
+        before,
+        period,
+        _PERIOD_FIELDS,
+        action="reporting_period.unlocked",
         reason=reason,
     )
     return period
@@ -460,11 +595,22 @@ async def publish_period(
     _require_role(access, OrgRole.ORG_ADMIN)
     period = await _get_period(session, access, period_id)
     _require_status(period, PeriodStatus.LOCKED, "published")
+    before = audit.snapshot(period, _PERIOD_FIELDS)
     period.status = PeriodStatus.PUBLISHED
     period.published_at = datetime.now(UTC)
     period.published_by = access.user_id
     await _flush(session)
     await session.refresh(period)
+    await _record_update(
+        session,
+        access,
+        "reporting_period",
+        period.id,
+        before,
+        period,
+        _PERIOD_FIELDS,
+        action="reporting_period.published",
+    )
     return period
 
 
@@ -516,6 +662,15 @@ async def grant_role(
     repository.add_role_assignment(session, assignment)
     await _flush(session)
     await session.refresh(assignment)
+    await audit.record(
+        session,
+        organization_id=access.organization_id,
+        actor_user_id=access.user_id,
+        action="role_assignment.granted",
+        target_table="role_assignment",
+        target_id=assignment.id,
+        after={"user_id": user_id, "role": assignment.role, "entity_id": assignment.entity_id},
+    )
     user = await repository.get_user(session, user_id)
     assert user is not None  # noqa: S101  (visible: now a member of the current organization)
     return _assignment_out(assignment, user)
@@ -545,6 +700,16 @@ async def revoke_role(
     assignment.revoked_at = datetime.now(UTC)
     assignment.revoked_by = access.user_id
     await _flush(session)
+    await audit.record(
+        session,
+        organization_id=access.organization_id,
+        actor_user_id=access.user_id,
+        action="role_assignment.revoked",
+        target_table="role_assignment",
+        target_id=assignment.id,
+        before={"user_id": assignment.user_id, "role": assignment.role, "revoked_at": None},
+        after={"revoked_at": assignment.revoked_at},
+    )
     user = await repository.get_user(session, assignment.user_id)
     assert user is not None  # noqa: S101  (members of the current organization are visible)
     return _assignment_out(assignment, user)
