@@ -19,9 +19,10 @@ import yaml
 from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.auth import OrgAccess
+from app.core.auth import OrgAccess, OrgRole
 from app.core.db import flush_or_conflict
 from app.core.errors import NotFoundError, PermissionDeniedError
+from app.modules.audit import service as audit
 from app.modules.catalog import repository
 from app.modules.catalog.models import (
     DataType,
@@ -52,7 +53,6 @@ from app.modules.catalog.schemas import (
     StandardDetail,
     StandardOut,
 )
-from app.modules.tenancy.service import OrgRole
 
 _CONSTRAINT_MESSAGES = {
     "uq_dimension_tenant_code": "A dimension with this code already exists.",
@@ -60,6 +60,8 @@ _CONSTRAINT_MESSAGES = {
     "uq_metric_definition_tenant_code": "A metric with this code already exists.",
 }
 _READ_ONLY = "Global catalog entries are read-only."
+_VALUE_FIELDS = ("label", "sort_order", "retired_at")
+_METRIC_FIELDS = ("name", "description", "requirement", "retired_at")
 
 
 # --- seeding
@@ -133,6 +135,16 @@ async def apply_catalog(session: AsyncSession, files: list[CatalogFile]) -> Seed
                     session, standard, seed_disclosure, position, dimensions, report
                 )
     await session.flush()
+    if report.created or report.updated:
+        await audit.record(
+            session,
+            organization_id=None,
+            actor_user_id=None,
+            action="catalog.seeded",
+            target_table="standard",
+            target_id=None,
+            after={"created": dict(report.created), "updated": dict(report.updated)},
+        )
     return report
 
 
@@ -308,6 +320,27 @@ async def _seed_metric(
 # --- tenant API: helpers
 
 
+async def _record(
+    session: AsyncSession,
+    access: OrgAccess,
+    action: str,
+    table: str,
+    target_id: UUID,
+    before: dict[str, Any] | None = None,
+    after: dict[str, Any] | None = None,
+) -> None:
+    await audit.record(
+        session,
+        organization_id=access.organization_id,
+        actor_user_id=access.user_id,
+        action=action,
+        target_table=table,
+        target_id=target_id,
+        before=before,
+        after=after,
+    )
+
+
 def _require_admin(access: OrgAccess) -> None:
     if not access.has_any_role(OrgRole.ORG_ADMIN):
         raise PermissionDeniedError("Your role does not allow this action.")
@@ -414,6 +447,14 @@ async def create_dimension(
     for value in values:
         repository.add(session, value)
     await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
+    await _record(
+        session,
+        access,
+        "dimension.created",
+        "dimension",
+        dimension.id,
+        after={"code": dimension.code, "name": dimension.name, "values": [v.code for v in values]},
+    )
     return _dimension_out(dimension, values)
 
 
@@ -436,6 +477,18 @@ async def add_dimension_value(
     )
     repository.add(session, value)
     await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
+    await _record(
+        session,
+        access,
+        "dimension_value.created",
+        "dimension_value",
+        value.id,
+        after={
+            "dimension_id": dimension.id,
+            "code": value.code,
+            **audit.snapshot(value, _VALUE_FIELDS),
+        },
+    )
     return _value_out(value)
 
 
@@ -448,6 +501,7 @@ async def update_dimension_value(
         raise NotFoundError("Dimension value not found.")
     if value.organization_id is None:
         raise PermissionDeniedError(_READ_ONLY)
+    before = audit.snapshot(value, _VALUE_FIELDS)
     if data.label is not None:
         value.label = data.label
     if data.sort_order is not None:
@@ -455,6 +509,17 @@ async def update_dimension_value(
     if data.retired is not None:
         value.retired_at = _retired_at(data.retired, value.retired_at)
     await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
+    changed_before, changed_after = audit.diff(before, audit.snapshot(value, _VALUE_FIELDS))
+    if changed_after:
+        await _record(
+            session,
+            access,
+            "dimension_value.updated",
+            "dimension_value",
+            value.id,
+            changed_before,
+            changed_after,
+        )
     return _value_out(value)
 
 
@@ -529,7 +594,27 @@ async def create_metric(session: AsyncSession, access: OrgAccess, data: MetricCr
         )
     await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
     await session.refresh(metric)
-    return (await _metrics_out(session, [metric]))[0]
+    created = (await _metrics_out(session, [metric]))[0]
+    await _record(
+        session,
+        access,
+        "metric_definition.created",
+        "metric_definition",
+        metric.id,
+        after=created.model_dump(
+            include={
+                "code",
+                "disclosure_id",
+                "name",
+                "data_type",
+                "unit",
+                "requirement",
+                "validation_rules",
+                "dimensions",
+            }
+        ),
+    )
+    return created
 
 
 async def update_metric(
@@ -539,6 +624,7 @@ async def update_metric(
     metric = await _get_metric(session, access, metric_id)
     if metric.organization_id is None:
         raise PermissionDeniedError(_READ_ONLY)
+    before = audit.snapshot(metric, _METRIC_FIELDS)
     if data.name is not None:
         metric.name = data.name
     if "description" in data.model_fields_set:
@@ -549,4 +635,15 @@ async def update_metric(
         metric.retired_at = _retired_at(data.retired, metric.retired_at)
     await flush_or_conflict(session, _CONSTRAINT_MESSAGES)
     await session.refresh(metric)
+    changed_before, changed_after = audit.diff(before, audit.snapshot(metric, _METRIC_FIELDS))
+    if changed_after:
+        await _record(
+            session,
+            access,
+            "metric_definition.updated",
+            "metric_definition",
+            metric.id,
+            changed_before,
+            changed_after,
+        )
     return (await _metrics_out(session, [metric]))[0]

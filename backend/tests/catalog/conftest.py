@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.modules.catalog.seed import seed as seed_catalog
 from app.modules.catalog.service import SeedReport
-from tests.world import Seed
+from tests.world import Seed, truncate
 
 FIXTURES = Path(__file__).parent / "fixtures"
 CATALOG_TABLES = (
@@ -65,5 +65,4 @@ async def catalog(
         site=await one("SELECT id FROM dimension WHERE code = 'site'"),
         gas_a=await one("SELECT id FROM dimension_value WHERE code = 'gas_a'"),
     )
-    async with db_engine.begin() as conn:
-        await conn.execute(text(f"TRUNCATE {CATALOG_TABLES} CASCADE"))
+    await truncate(db_engine, CATALOG_TABLES)

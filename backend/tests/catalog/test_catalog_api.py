@@ -562,3 +562,24 @@ async def test_update_value_validates_role_and_tenant(
     )
 
     assert (bad.status_code, viewer.status_code, other.status_code) == (422, 403, 404)
+
+
+async def test_custom_catalog_changes_are_audited(
+    api: AsyncClient, world: World, catalog: Catalog
+) -> None:
+    metric = await create_metric(api, world, catalog, world.org_a)
+    await api.patch(
+        org_url(world.org_a, f"metrics/{metric}"),
+        json={"name": "Fleet diesel"},
+        headers=world.auth(world.a_admin),
+    )
+
+    log = await api.get(org_url(world.org_a, "audit-log"), headers=world.auth(world.a_auditor))
+
+    [updated, created] = log.json()["items"]
+    assert created["action"] == "metric_definition.created"
+    assert created["after"]["unit"] == "L"
+    assert (updated["before"], updated["after"]) == (
+        {"name": "Fleet fuel"},
+        {"name": "Fleet diesel"},
+    )

@@ -7,6 +7,7 @@ service because it needs tenancy data. Other modules get both from there.
 import hashlib
 import secrets
 from dataclasses import dataclass
+from enum import StrEnum
 from functools import cache
 from uuid import UUID
 
@@ -14,6 +15,16 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 
 _hasher = PasswordHasher()  # Argon2id with the library's current recommended parameters
+
+
+class OrgRole(StrEnum):
+    """Roles a user can hold in an organization. Stored as data in role_assignment.role."""
+
+    ORG_ADMIN = "org_admin"
+    CONTRIBUTOR = "contributor"
+    APPROVER = "approver"
+    VIEWER = "viewer"
+    AUDITOR = "auditor"
 
 
 @dataclass(frozen=True, slots=True)

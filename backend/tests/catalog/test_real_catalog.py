@@ -3,12 +3,12 @@
 from collections.abc import AsyncIterator
 
 import pytest
-from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.modules.catalog.service import load_catalog
 from app.modules.catalog.units import CATALOG_DIR
 from tests.catalog.conftest import CATALOG_TABLES, run_seed
+from tests.world import truncate
 
 
 def test_real_catalog_validates() -> None:
@@ -20,8 +20,7 @@ def test_real_catalog_validates() -> None:
 @pytest.fixture
 async def clean_catalog(db_engine: AsyncEngine) -> AsyncIterator[None]:
     yield
-    async with db_engine.begin() as conn:
-        await conn.execute(text(f"TRUNCATE {CATALOG_TABLES} CASCADE"))
+    await truncate(db_engine, CATALOG_TABLES)
 
 
 @pytest.mark.integration
