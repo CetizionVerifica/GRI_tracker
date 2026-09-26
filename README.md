@@ -45,8 +45,28 @@ uv run alembic upgrade head
 uv run uvicorn app.main:app --reload   # docs at http://localhost:8000/docs
 ```
 
+The app connects as `gri_api`, a member of the `gri_app` role, which is subject to row-level
+security. Migrations run as the owner (`MIGRATION_DATABASE_URL`). `gri_api` is created by
+`infra/postgres/initdb/` only when the Postgres volume is first created. For a volume that
+already exists, run `docker compose down -v` (this deletes local data) or create the role by hand.
+
 Set `POSTGRES_PORT`, `REDIS_PORT`, `MINIO_PORT` or `MINIO_CONSOLE_PORT` before `docker compose up` to
 change host ports (update the matching URL in `.env`). The `minio-init` service creates the bucket.
+
+## Authentication and first admin
+
+Log in with `POST /api/v1/auth/login` (email and password). It returns an opaque bearer token;
+only its SHA-256 digest is stored, and `POST /api/v1/auth/logout` revokes it. Create the first
+platform admin from the command line (it prompts for the password):
+
+```bash
+cd backend
+uv run python -m app.modules.tenancy.bootstrap --email you@example.com --name "Your Name"
+```
+
+Organization data lives under `/api/v1/organizations/{organization_id}/...`. Non-members get
+404, so other organizations' existence is never revealed. Platform admins can reach every
+organization; only they create organizations and users, and only they grant or revoke `auditor`.
 
 ## Health and observability
 

@@ -27,6 +27,7 @@ class AppError(Exception):
     status_code: int = status.HTTP_400_BAD_REQUEST
     code: str = "bad-request"
     title: str = "Bad request"
+    headers: Mapping[str, str] | None = None
 
     def __init__(self, message: str) -> None:
         super().__init__(message)
@@ -45,6 +46,15 @@ class ConflictError(AppError):
     status_code = status.HTTP_409_CONFLICT
     code = "conflict"
     title = "Conflict"
+
+
+class UnauthenticatedError(AppError):
+    """Missing, invalid or expired credentials."""
+
+    status_code = status.HTTP_401_UNAUTHORIZED
+    code = "unauthenticated"
+    title = "Unauthenticated"
+    headers = {"WWW-Authenticate": "Bearer"}  # noqa: RUF012  (read-only class constant)
 
 
 class PermissionDeniedError(AppError):
@@ -109,6 +119,7 @@ async def _handle_app_error(request: Request, exc: Exception) -> JSONResponse:
         code=exc.code,
         title=exc.title,
         detail=exc.message,
+        headers=exc.headers,
     )
 
 
